@@ -1,0 +1,28 @@
+baseURL = "https://jcrd.github.io/"
+languageCode = "en-us"
+title = "twiddling bits"
+
+theme = "etch"
+pygmentsCodeFences = true
+pygmentsUseClasses = true
+
+[params]
+copyright = "© 2021 James Reed"
+highlight = true
+
+[[menu.main]]
+identifier = "posts"
+name = "posts"
+title = "posts"
+url = "/"
+weight = 1
+
+[[menu.main]]
+identifier = "about"
+name = "about"
+title = "about"
+url = "/about/"
+weight = 2
+
+[permalinks]
+posts = "/:title/"
