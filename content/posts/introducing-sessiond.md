@@ -1,5 +1,5 @@
 ---
-title: "Introducing Sessiond"
+title: "Introducing sessiond"
 date: 2021-04-04T17:26:11-06:00
 ---
 
