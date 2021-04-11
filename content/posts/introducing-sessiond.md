@@ -75,8 +75,8 @@ issue [here][sessiond.org-repo].
 
 ### Setting up your window manager
 
-The simplest way to use sessiond with your window manager of choice is to first
-create a custom *systemd* service in the `~/.config/systemd/user` directory.
+The intended way to use sessiond with your window manager of choice is to create
+a custom *systemd* service in the `~/.config/systemd/user` directory.
 For example, below is a `awesome.service` file that runs the
 [Awesome][awesomewm] window manager:
 
@@ -89,26 +89,22 @@ PartOf=graphical-session.target
 
 [Service]
 ExecStart=/usr/bin/awesome
+
+[Install]
+Alias=window-manager.service
 ```
 
 The options in the `[Unit]` section ensure your window manager is only running
-alongside the sessiond daemon. Because the service will be started directly by
-`sessionctl`, an `[Install]` section is not required.
+alongside the sessiond daemon. The `Alias=` option in the `[Install]` section
+lets sessiond know this service is the window manager so the session will be
+stopped when it exits.
 
-Secondly, create a custom Desktop Entry file in `/usr/share/xsessions`:
+Next, enable the window manager service with
+`systemctl --user enable awesome.service`.
 
-```ini
-[Desktop Entry]
-Name=awesome
-Comment=Awesome window manager
-TryExec=awesome
-Exec=sessionctl run awesome.service
-Type=Application
-```
-
-Now, select this entry via your display manager or set it as the default in its
-configuration file. For example, if using `lightdm`, set `user-session=awesome`
-in `/etc/lightdm/lightdm.conf`.
+Now, select the `sessiond session` entry via your display manager or set it as
+the default in its configuration file. For example, if using `lightdm`, set
+`user-session=sessiond` in `/etc/lightdm/lightdm.conf`.
 
 [awesomewm]: https://awesomewm.org/
 
