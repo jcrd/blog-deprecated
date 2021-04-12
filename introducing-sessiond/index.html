@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://twiddlingbits.net/favicon.ico><link rel=stylesheet href=/css/style.min.css><title>Introducing sessiond</title></head><body><header id=banner><h2><a href=https://twiddlingbits.net/>twiddling bits</a></h2><nav><ul><li><a href=/ title=posts>posts</a></li><li><a href=/about/ title=about>about</a></li></ul></nav></header><main id=content><article><header id=post-header><h1>Introducing sessiond</h1><time>April 4, 2021</time></header><p>When I began using Linux on the desktop in ~2012, I experimented with the
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://twiddlingbits.net/favicon.ico><link rel=stylesheet href=/css/style.min.css><title>Introducing sessiond</title></head><body><header id=banner><h2><a href=https://twiddlingbits.net/>twiddling bits</a></h2><nav><ul><li><a href=/ title=posts>posts</a></li><li><a href=/about/ title=about>about</a></li></ul></nav></header><main id=content><article><header id=post-header><h1>Introducing sessiond</h1><div>Updated <time>April 11, 2021</time></div></header><p>When I began using Linux on the desktop in ~2012, I experimented with the
 prevalent desktop environments (Gnome, KDE, etc.), but was quickly drawn into
 the realm of tiling window managers by their promise of increased productivity
 and customization. While I believe these promises were fulfilled, tiling window
@@ -26,8 +26,8 @@ dnf install sessiond
 </code></pre></div><p>I would like to see packages for other major distros in the future.
 Until sessiond achieves world domination, it is recommended to build from source
 by following <a href=https://sessiond.org/building/>these instructions</a>.</p><p>If you package sessiond for your distribution, please let me know by creating an
-issue <a href=https://github.com/jcrd/sessiond.org/issues>here</a>.</p><h3 id=setting-up-your-window-manager>Setting up your window manager</h3><p>The simplest way to use sessiond with your window manager of choice is to first
-create a custom <em>systemd</em> service in the <code>~/.config/systemd/user</code> directory.
+issue <a href=https://github.com/jcrd/sessiond.org/issues>here</a>.</p><h3 id=setting-up-your-window-manager>Setting up your window manager</h3><p>The intended way to use sessiond with your window manager of choice is to create
+a custom <em>systemd</em> service in the <code>~/.config/systemd/user</code> directory.
 For example, below is a <code>awesome.service</code> file that runs the
 <a href=https://awesomewm.org/>Awesome</a> window manager:</p><div class=highlight><pre class=chroma><code class=language-systemd data-lang=systemd><span class=k>[Unit]</span>
 <span class=na>Description</span><span class=o>=</span><span class=s>Awesome window manager</span>
@@ -37,17 +37,16 @@ For example, below is a <code>awesome.service</code> file that runs the
 
 <span class=k>[Service]</span>
 <span class=na>ExecStart</span><span class=o>=</span><span class=s>/usr/bin/awesome</span>
+
+<span class=k>[Install]</span>
+<span class=na>Alias</span><span class=o>=</span><span class=s>window-manager.service</span>
 </code></pre></div><p>The options in the <code>[Unit]</code> section ensure your window manager is only running
-alongside the sessiond daemon. Because the service will be started directly by
-<code>sessionctl</code>, an <code>[Install]</code> section is not required.</p><p>Secondly, create a custom Desktop Entry file in <code>/usr/share/xsessions</code>:</p><div class=highlight><pre class=chroma><code class=language-ini data-lang=ini><span class=k>[Desktop Entry]</span>
-<span class=na>Name</span><span class=o>=</span><span class=s>awesome</span>
-<span class=na>Comment</span><span class=o>=</span><span class=s>Awesome window manager</span>
-<span class=na>TryExec</span><span class=o>=</span><span class=s>awesome</span>
-<span class=na>Exec</span><span class=o>=</span><span class=s>sessionctl run awesome.service</span>
-<span class=na>Type</span><span class=o>=</span><span class=s>Application</span>
-</code></pre></div><p>Now, select this entry via your display manager or set it as the default in its
-configuration file. For example, if using <code>lightdm</code>, set <code>user-session=awesome</code>
-in <code>/etc/lightdm/lightdm.conf</code>.</p><h3 id=locking-the-session>Locking the session</h3><p>sessiond wouldn&rsquo;t be of much use without a means by which to lock the screen.
+alongside the sessiond daemon. The <code>Alias=</code> option in the <code>[Install]</code> section
+lets sessiond know this service is the window manager so the session will be
+stopped when it exits.</p><p>Next, enable the window manager service with
+<code>systemctl --user enable awesome.service</code>.</p><p>Now, select the <code>sessiond session</code> entry via your display manager or set it as
+the default in its configuration file. For example, if using <code>lightdm</code>, set
+<code>user-session=sessiond</code> in <code>/etc/lightdm/lightdm.conf</code>.</p><h3 id=locking-the-session>Locking the session</h3><p>sessiond wouldn&rsquo;t be of much use without a means by which to lock the screen.
 Create a service for your screen locker of choice in <code>~/.config/systemd/user</code>.
 For example, here is a <code>i3lock.service</code> that runs <code>i3lock</code> as the
 screen locker:</p><div class=highlight><pre class=chroma><code class=language-systemd data-lang=systemd><span class=k>[Unit]</span>
