@@ -20,11 +20,25 @@ url = "/"
 weight = 1
 
 [[menu.main]]
+identifier = "categories"
+name = "categories"
+title = "categories"
+url = "/categories"
+weight = 2
+
+[[menu.main]]
+identifier = "tags"
+name = "tags"
+title = "tags"
+url = "/tags"
+weight = 3
+
+[[menu.main]]
 identifier = "about"
 name = "about"
 title = "about"
 url = "/about/"
-weight = 2
+weight = 4
 
 [permalinks]
 posts = "/:title/"

@@ -1,5 +1,10 @@
 ---
 title: "Introducing sessiond"
+categories:
+- Projects
+tags:
+- C
+- Linux
 date: 2021-04-04T17:26:11-06:00
 ---
 

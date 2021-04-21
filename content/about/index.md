@@ -6,7 +6,7 @@ The name's Reed—James Reed. I'm a hobbyist programmer.
 
 I develop software in these languages:
 
-* C
+* [C](/tags/c)
   * [clipped][clipped]
   * [iniq][iniq]
   * [sessiond][sessiond]
