@@ -6,8 +6,6 @@ theme = "etch"
 pygmentsCodeFences = true
 pygmentsUseClasses = true
 
-enableGitInfo = true
-
 [params]
 copyright = "© 2021 James Reed"
 highlight = true
