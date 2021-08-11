@@ -28,6 +28,7 @@ I develop software in these languages:
 * Shell
   * [hdparmify][hdparmify]
   * [passless][passless]
+  * [snapback][snapback]
   * [toolboxcutter][toolboxcutter]
 * Arduino
   * [wio-pomodoro][wio-pomodoro]
@@ -46,6 +47,7 @@ I develop software in these languages:
 [passless]: https://github.com/jcrd/passless
 [python-pkgbuilder]: https://github.com/jcrd/python-pkgbuilder
 [sessiond]: https://github.com/jcrd/sessiond
+[snapback]: https://github.com/jcrd/snapback
 [tidepool]: https://github.com/jcrd/tidepool
 [toolboxcutter]: https://github.com/jcrd/toolboxcutter
 [wio-pomodoro]: https://github.com/jcrd/wio-pomodoro
