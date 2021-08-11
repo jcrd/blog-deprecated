@@ -2,7 +2,7 @@
 title: "About"
 ---
 
-The name's Reed—James Reed. I'm a hobbyist programmer.
+I'm James Reed, a postmodern homo sapien.
 
 I develop software in these languages:
 
