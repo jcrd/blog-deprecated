@@ -16,7 +16,7 @@ and customization. While I believe these promises were fulfilled, tiling window
 managers were not without a significant shortcoming: they are solely window
 managers, lacking the integrated suite of software and applications that put the
 environment in desktop environments. The most noticeable omission was proper
-*session management*, which fascilitates, for instance: locking the screen or
+*session management*, which facilitates, for instance: locking the screen or
 suspending the system after a period of inactivity. This was not a dealbreaker
 on a desktop computer, but using a laptop without these features felt like a
 dysfunctional hack.
