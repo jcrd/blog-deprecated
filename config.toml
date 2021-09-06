@@ -2,41 +2,45 @@ baseURL = "https://twiddlingbits.net/"
 languageCode = "en-us"
 title = "twiddling bits"
 
-theme = "etch"
+theme = "harbor"
+enableInlineShortcodes = true
 pygmentsCodeFences = true
 pygmentsUseClasses = true
 
-[params]
-copyright = "© 2021 James Reed"
-highlight = true
+[author]
+name = "James Reed"
 
-[[menu.main]]
-identifier = "posts"
-name = "posts"
-title = "posts"
-url = "/"
-weight = 1
-
-[[menu.main]]
-identifier = "categories"
-name = "categories"
-title = "categories"
-url = "/categories"
-weight = 2
-
-[[menu.main]]
-identifier = "tags"
-name = "tags"
-title = "tags"
-url = "/tags"
-weight = 3
-
-[[menu.main]]
+[[params.nav]]
 identifier = "about"
 name = "about"
-title = "about"
+icon = "fas fa-user fa-lg"
 url = "/about/"
-weight = 4
+weight = 1
+
+[[params.nav]]
+identifier = "categories"
+name = "categories"
+icon = "fas fa-folder-open fa-lg"
+url = "categories"
+weight = 2
+
+[[params.nav]]
+identifier = "tags"
+name = "tags"
+icon = "fas fa-tag fa-lg"
+url = "tags"
+weight = 3
+
+[[params.social]]
+name="github"
+url="https://github.com/jcrd"
+icon="fab fa-github fa-lg"
+
+[params.logo]
+url = "icon.png"
+width = 40
+height = 40
+alt = "logo"
 
 [permalinks]
 posts = "/:title/"

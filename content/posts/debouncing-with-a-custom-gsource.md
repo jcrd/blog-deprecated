@@ -1,10 +1,10 @@
 ---
 title: "Debouncing with a custom GSource"
 categories:
-- Development
+  - Development
 tags:
-- C
-- Linux
+  - C
+  - Linux
 date: 2021-04-13T10:40:28-06:00
 ---
 
