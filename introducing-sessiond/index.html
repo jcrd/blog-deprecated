@@ -1,4 +1,6 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://twiddlingbits.net/favicon.ico><link rel=stylesheet href=/css/style.min.css><title>Introducing sessiond</title></head><body><header id=banner><h2><a href=https://twiddlingbits.net/>twiddling bits</a></h2><nav><ul><li><a href=/ title=posts>posts</a></li><li><a href=/categories title=categories>categories</a></li><li><a href=/tags title=tags>tags</a></li><li><a href=/about/ title=about>about</a></li></ul></nav></header><main id=content><article><header id=post-header><h1>Introducing sessiond</h1><div>Updated <time>April 11, 2021</time></div></header><p>When I began using Linux on the desktop in ~2012, I experimented with the
+<!doctype html><html lang=en-us><head><meta charset=utf-8><title>Introducing sessiond</title><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><link rel=alternate type=application/rss+xml href=https://twiddlingbits.net/index.xml title="twiddling bits"><meta name=twitter:card content="summary"><meta name=twitter:title content="Introducing sessiond"><meta name=twitter:description content="When I began using Linux on the desktop in ~2012, I experimented with the prevalent desktop environments (Gnome, KDE, etc.), but was quickly drawn into the realm of tiling window managers by their promise of increased productivity and customization. While I believe these promises were fulfilled, tiling window managers were not without a significant shortcoming: they are solely window managers, lacking the integrated suite of software and applications that put the environment in desktop environments."><link rel=stylesheet href=https://twiddlingbits.net/fontawesome/css/all.min.css><link id=dark-mode-theme rel=stylesheet href=https://twiddlingbits.net/css/dark.css><script>var darkTheme=document.getElementById('dark-mode-theme')
+var storedTheme=localStorage.getItem('dark-mode-storage')
+if(storedTheme==='dark'){darkTheme.disabled=false}else if(storedTheme==='light'){darkTheme.disabled=true}</script><script src=https://twiddlingbits.net/js/main.bundle.js></script><script src=https://twiddlingbits.net/js/instantpage.min.js type=module defer></script><meta name=generator content="Hugo 0.80.0"></head><body><header><nav class=navbar><div class=nav><a href=https://twiddlingbits.net/ class=nav-logo><img src=https://twiddlingbits.net/images/icon.png width=40 height=40 alt=logo></a><ul class=nav-links><li><a href=/about/ id=about><em class="fas fa-user fa-lg"></em></a></li><li><a href=/categories id=categories><em class="fas fa-folder-open fa-lg"></em></a></li><li><a href=/tags id=tags><em class="fas fa-tag fa-lg"></em></a></li></ul></div></nav><div class=intro-header><div class=container><div class=posts-heading><h1>Introducing sessiond</h1></div></div></div></header><div class=container role=main><article class=article class=blog-post><p>When I began using Linux on the desktop in ~2012, I experimented with the
 prevalent desktop environments (Gnome, KDE, etc.), but was quickly drawn into
 the realm of tiling window managers by their promise of increased productivity
 and customization. While I believe these promises were fulfilled, tiling window
@@ -11,7 +13,7 @@ on a desktop computer, but using a laptop without these features felt like a
 dysfunctional hack.</p><p>It would be quite a few more years of exploring the universe of tiling window
 managers before deciding to address this issue myself, and with the broad
 adoption of <em>systemd</em> by the larger Linux ecosystem, it was easier than ever.
-Enter: <strong>sessiond</strong>, a standalone session manager for Linux.</p><h2 id=what-does-it-do>What does it do?</h2><p>sessiond is a daemon for <em>systemd</em>-based Linux systems that interfaces with
+Enter: <strong>sessiond</strong>, a standalone session manager for Linux.</p><nav id=TableOfContents><ul><li><a href=#what-does-it-do>What does it do?</a></li><li><a href=#how-do-i-use-it>How do I use it?</a><ul><li><a href=#installation>Installation</a></li><li><a href=#setting-up-your-window-manager>Setting up your window manager</a></li><li><a href=#locking-the-session>Locking the session</a></li><li><a href=#other-services>Other services</a></li><li><a href=#inhibiting-idling>Inhibiting idling</a></li></ul></li><li><a href=#more-information>More information</a></li></ul></nav><h2 id=what-does-it-do>What does it do?</h2><p>sessiond is a daemon for <em>systemd</em>-based Linux systems that interfaces with
 <em>systemd-logind</em> to provide the missing session management features to X11
 window managers. Its primary responsibility is to monitor keyboard and mouse
 activity to determine when a session has become idle, and to then act
@@ -72,4 +74,13 @@ creating <em>systemd</em> service files in <code>~/.config/systemd/user</code> c
 watching a video. <code>sessiond-inhibit</code> comes to the rescue:</p><div class=highlight><pre class=chroma><code class=language-sh data-lang=sh>sessiond-inhibit -y <span class=s1>&#39;movie night&#39;</span> mpv ...
 </code></pre></div><p>This can be automated if your window manager supports client rules and some
 level of scripting.</p><h2 id=more-information>More information</h2><p>For more information about sessiond, visit its <a href=https://sessiond.org/>website</a>.</p><p>You should now be equipped with sufficient knowledge to go forth and manage your
-own sessions!</p></article></main><footer id=footer>© 2021 James Reed</footer></body></html>
+own sessions!</p><div class=blog-tags><a href=https://twiddlingbits.net/tags/c/>C</a>&nbsp;
+<a href=https://twiddlingbits.net/tags/linux/>Linux</a>&nbsp;</div></article></div><footer><div class=social-icons><a href=https://github.com/jcrd name=github><em class="fab fa-github fa-lg"></em></a></div><div class=container><p class="credits copyright"><a href=https://twiddlingbits.net/about>James Reed</a>
+&nbsp;&copy;
+2021
+&nbsp;/&nbsp;
+<a href=https://twiddlingbits.net/>twiddling bits</a>
+&nbsp;&ndash;&nbsp;
+<em class="fas fa-moon" id=dark-mode-toggle></em></p><p class="credits theme-by">Powered By <a href=https://gohugo.io>Hugo</a>&nbsp;
+Theme
+<a href=https://github.com/matsuyoshi30/harbor>Harbor</a></p></div></footer></body></html>
