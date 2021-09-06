@@ -1,3 +1,8 @@
 FROM supplantr/toolbox
 
-RUN dnf install -y hugo
+ARG HUGO_VERSION=0.88.1
+
+RUN wget -O hugo.tar.gz \
+    https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz
+RUN tar -xzf hugo.tar.gz
+RUN cp -p hugo /usr/bin/hugo
