@@ -17,6 +17,7 @@ I develop software in these languages:
   * [tidepool][tidepool]
   * [wm-launch][wm-launch]
 * Python
+  * [devlog][devlog]
   * [python-pkgbuilder][python-pkgbuilder]
   * [sessiond][sessiond]
 * Lua
@@ -38,6 +39,7 @@ I develop software in these languages:
 [awesome-ez]: https://github.com/jcrd/awesome-ez
 [awesome-launch]: https://github.com/jcrd/awesome-launch
 [clipped]: https://github.com/jcrd/clipped
+[devlog]: https://github.com/jcrd/devlog
 [dovetail]: https://github.com/jcrd/dovetail
 [hdparmify]: https://github.com/jcrd/hdparmify
 [iniq]: https://github.com/jcrd/iniq
