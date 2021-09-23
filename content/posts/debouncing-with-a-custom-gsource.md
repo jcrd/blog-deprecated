@@ -18,8 +18,8 @@ especially mouse input events which are generated constantly while the mouse
 pointer moves.
 
 [sessiond]: https://twiddlingbits.net/introducing-sessiond/
-[glib]: https://developer.gnome.org/glib/
-[gsource]: https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html#GSource
+[glib]: https://docs.gtk.org/glib/
+[gsource]: https://docs.gtk.org/glib/struct.Source.html
 
 ## Abstract debouncing
 
@@ -58,7 +58,7 @@ received—the essence of debouncing.
 This method of debouncing can be implemented with a custom GSource's `check` and
 `dispatch` functions using [g_source_set_ready_time][ready-time].
 
-[ready-time]: https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html#g-source-set-ready-time
+[ready-time]: https://docs.gtk.org/glib/method.Source.set_ready_time.html
 
 First, define a custom GSource by declaring a struct containing a `GSource`:
 
@@ -164,5 +164,5 @@ self->last_event_time = 0;
 For a complete working example, refer to sessiond's debouncing implementation in
 [xsource.c][xsource].
 
-[gsource-tut]: https://developer.gnome.org/gnome-devel-demos/unstable/custom-gsource.c.html.en
+[gsource-tut]: https://web.archive.org/web/20200806195500/https://developer.gnome.org/gnome-devel-demos/unstable/custom-gsource.c.html.en
 [xsource]: https://github.com/jcrd/sessiond/blob/master/src/xsource.c
