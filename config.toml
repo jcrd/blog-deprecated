@@ -10,6 +10,9 @@ pygmentsUseClasses = true
 [author]
 name = "James Reed"
 
+[params.goatcounter]
+domain = "twiddlingbits.goatcounter.com"
+
 [[params.nav]]
 identifier = "about"
 name = "about"
