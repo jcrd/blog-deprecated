@@ -1,4 +1,4 @@
 FROM supplantr/toolbox
 
-RUN dnf copr enable -y dontfreakout/Hugo
+RUN dnf copr enable -y jcrd/hugo-extended
 RUN dnf install -y hugo
