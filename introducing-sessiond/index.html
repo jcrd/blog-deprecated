@@ -1,0 +1,192 @@
+<!doctype html><html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Introducing sessiond - twiddling bits</title>
+<meta name=author content="James Reed">
+<meta name=description content="bits of blogging">
+<meta name=generator content="Hugo 0.89.4"><link rel=stylesheet href="https://twiddlingbits.net/css/main.min.48374e1224dd247a477aca09ee6c24cd61d0e3c94c49e588b0c30bf2cd2d2b49.css" integrity="sha256-SDdOEiTdJHpHesoJ7mwkzWHQ48lMSeWIsMML8s0tK0k=">
+<script data-goatcounter=https://twiddlingbits.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+</head>
+<body class="flex flex-col h-screen m-auto max-w-2xl">
+<div class=py-6>
+<nav class="flex flex-row justify-between text-lg">
+<a class="font-bold hover:underline" href=/>twiddling bits</a>
+<ul class="flex flex-row gap-x-4">
+<li>
+<a class="underline hover:no-underline" href=/about title>about</a>
+</li><li>
+<a class="underline hover:no-underline" href=/categories/ title>categories</a>
+</li><li>
+<a class="underline hover:no-underline" href=/tags/ title>tags</a>
+</li>
+</ul>
+</nav>
+</div>
+<main class=flex-grow>
+<article class="gap-y-2 post-border pt-12">
+<h1 class="text-2xl font-bold">Introducing sessiond</h1>
+<div class="flex flex-col gap-y-1 py-4 text-gray-500">
+<span class=italic>
+Apr 4, 2021
+&bull;
+edited: April 11, 2021
+</span>
+<div class="flex flex-row space-x-4">
+<ul class="flex flex-row flex-wrap gap-x-2">
+<li>
+<a class=category href=/categories/projects>Projects</a>
+</li>
+</ul>
+<ul class="flex flex-row flex-wrap gap-x-2">
+<li>
+<a class=tag href=/tags/c>#C</a>
+</li><li>
+<a class=tag href=/tags/linux>#Linux</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=prose><p>When I began using Linux on the desktop in ~2012, I experimented with the
+prevalent desktop environments (Gnome, KDE, etc.), but was quickly drawn into
+the realm of tiling window managers by their promise of increased productivity
+and customization. While I believe these promises were fulfilled, tiling window
+managers were not without a significant shortcoming: they are solely window
+managers, lacking the integrated suite of software and applications that put the
+environment in desktop environments. The most noticeable omission was proper
+<em>session management</em>, which facilitates, for instance: locking the screen or
+suspending the system after a period of inactivity. This was not a dealbreaker
+on a desktop computer, but using a laptop without these features felt like a
+dysfunctional hack.</p>
+<p>It would be quite a few more years of exploring the universe of tiling window
+managers before deciding to address this issue myself, and with the broad
+adoption of <em>systemd</em> by the larger Linux ecosystem, it was easier than ever.
+Enter: <strong>sessiond</strong>, a standalone session manager for Linux.</p>
+<h2 id=what-does-it-do>What does it do?</h2>
+<p>sessiond is a daemon for <em>systemd</em>-based Linux systems that interfaces with
+<em>systemd-logind</em> to provide the missing session management features to X11
+window managers. Its primary responsibility is to monitor keyboard and mouse
+activity to determine when a session has become idle, and to then act
+accordingly. It is capable of:</p>
+<ul>
+<li>locking the screen when idle and before suspending the system</li>
+<li>dimming the screen&rsquo;s backlight when idle</li>
+<li>triggering <em>systemd</em> targets for use by the window manager or end user</li>
+<li>optionally managing DPMS settings</li>
+</ul>
+<p>It also provides a DBus service so that it may be integrated with modern window
+managers. For example, a window manager can prevent idling when a media player
+is open by interacting with the DBus methods.</p>
+<p>It is designed to be zero-configuration, providing sensible defaults, but allows
+configuration if needed. See <a href=https://sessiond.org/configuration/>here</a> for additional details.</p>
+<h2 id=how-do-i-use-it>How do I use it?</h2>
+<p>sessiond requires a Linux system utilizing <em>systemd-logind</em>. It may be possible
+to use <a href=https://github.com/elogind/elogind>elogind</a> but this has not been tested.</p>
+<p><strong>Note</strong>: This brief tutorial assumes basic knowledge of <em>systemd</em>-based Linux
+systems and the command-line.</p>
+<h3 id=installation>Installation</h3>
+<p>Currently, sessiond RPM packages are built for Fedora via <a href=https://copr.fedorainfracloud.org/coprs/jcrd/sessiond/>copr</a> and
+installable with the following commands:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>dnf copr <span class=nb>enable</span> jcrd/sessiond
+dnf install sessiond
+</code></pre></div><p>I would like to see packages for other major distros in the future.
+Until sessiond achieves world domination, it is recommended to build from source
+by following <a href=https://sessiond.org/building/>these instructions</a>.</p>
+<p>If you package sessiond for your distribution, please let me know by creating an
+issue <a href=https://github.com/jcrd/sessiond.org/issues>here</a>.</p>
+<h3 id=setting-up-your-window-manager>Setting up your window manager</h3>
+<p>The intended way to use sessiond with your window manager of choice is to create
+a custom <em>systemd</em> service in the <code>~/.config/systemd/user</code> directory.
+For example, below is a <code>awesome.service</code> file that runs the
+<a href=https://awesomewm.org/>Awesome</a> window manager:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-systemd data-lang=systemd><span class=k>[Unit]</span>
+<span class=na>Description</span><span class=o>=</span><span class=s>Awesome window manager</span>
+<span class=na>Requires</span><span class=o>=</span><span class=s>sessiond-session.target</span>
+<span class=na>After</span><span class=o>=</span><span class=s>sessiond.service</span>
+<span class=na>PartOf</span><span class=o>=</span><span class=s>graphical-session.target</span>
+
+<span class=k>[Service]</span>
+<span class=na>ExecStart</span><span class=o>=</span><span class=s>/usr/bin/awesome</span>
+
+<span class=k>[Install]</span>
+<span class=na>Alias</span><span class=o>=</span><span class=s>window-manager.service</span>
+</code></pre></div><p>The options in the <code>[Unit]</code> section ensure your window manager is only running
+alongside the sessiond daemon. The <code>Alias=</code> option in the <code>[Install]</code> section
+lets sessiond know this service is the window manager so the session will be
+stopped when it exits.</p>
+<p>Next, enable the window manager service with
+<code>systemctl --user enable awesome.service</code>.</p>
+<p>Now, select the <code>sessiond session</code> entry via your display manager or set it as
+the default in its configuration file. For example, if using <code>lightdm</code>, set
+<code>user-session=sessiond</code> in <code>/etc/lightdm/lightdm.conf</code>.</p>
+<h3 id=locking-the-session>Locking the session</h3>
+<p>sessiond wouldn&rsquo;t be of much use without a means by which to lock the screen.
+Create a service for your screen locker of choice in <code>~/.config/systemd/user</code>.
+For example, here is a <code>i3lock.service</code> that runs <code>i3lock</code> as the
+screen locker:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-systemd data-lang=systemd><span class=k>[Unit]</span>
+<span class=na>Description</span><span class=o>=</span><span class=s>Lock X session with i3lock</span>
+<span class=na>PartOf</span><span class=o>=</span><span class=s>graphical-session.target</span>
+
+<span class=k>[Service]</span>
+<span class=na>ExecStart</span><span class=o>=</span><span class=s>/usr/bin/i3lock</span>
+<span class=na>ExecStopPost</span><span class=o>=</span><span class=s>/usr/bin/sessionctl unlock</span>
+
+<span class=k>[Install]</span>
+<span class=na>WantedBy</span><span class=o>=</span><span class=s>graphical-lock.target</span>
+</code></pre></div><p>The <code>sessionctl unlock</code> command in <code>ExecStopPost</code> under the <code>[Service]</code> section
+notifies sessiond that the session has been unlocked when the service exits.
+Enable with <code>systemctl --user enable i3lock</code> so its started upon triggering the
+<code>graphical-lock</code> target, which by default occurs when the session becomes
+inactive and before suspending the system.</p>
+<h3 id=other-services>Other services</h3>
+<p>Additional services (e.g. a compositor) can be started with the session by
+creating <em>systemd</em> service files in <code>~/.config/systemd/user</code> containing:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-systemd data-lang=systemd><span class=k>[Unit]</span>
+<span class=na>PartOf</span><span class=o>=</span><span class=s>graphical-session.target</span>
+</code></pre></div><p>and:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-systemd data-lang=systemd><span class=k>[Install]</span>
+<span class=na>WantedBy</span><span class=o>=</span><span class=s>graphical-session.target</span>
+</code></pre></div><p>Enable such services with <code>systemctl --user enable &lt;service></code>.</p>
+<h3 id=inhibiting-idling>Inhibiting idling</h3>
+<p>It&rsquo;s often desirable to prevent the session from idling while, for instance,
+watching a video. <code>sessiond-inhibit</code> comes to the rescue:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>sessiond-inhibit -y <span class=s1>&#39;movie night&#39;</span> mpv ...
+</code></pre></div><p>This can be automated if your window manager supports client rules and some
+level of scripting.</p>
+<h2 id=more-information>More information</h2>
+<p>For more information about sessiond, visit its <a href=https://sessiond.org/>website</a>.</p>
+<p>You should now be equipped with sufficient knowledge to go forth and manage your
+own sessions!</p>
+</div>
+</article>
+</main>
+<div class=py-10>
+<footer class="flex justify-center">
+<div class="flex flex-col gap-y-2">
+<div class="flex gap-x-1">
+<a class=hover:underline href=/about>James Reed</a>
+<p class=text-gray-500>
+&nbsp;&copy;
+2021
+&sdot;
+</p>
+<a class=hover:underline href=/>twiddling bits</a>
+</div>
+<div class="flex justify-center gap-x-4 text-gray-500">
+<p>
+powered by
+<a class=bold-link href=https://gohugo.io/>hugo</a>
+</p>
+<p>
+theme
+<a class=bold-link href=https://github.com/jcrd/hugo-theme-readme>
+readme
+</a>
+</p>
+</div>
+</div>
+</footer>
+</div>
+</body>
+</html>
