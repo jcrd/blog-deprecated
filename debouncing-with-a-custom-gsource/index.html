@@ -1,14 +1,62 @@
-<!doctype html><html lang=en-us><head><meta charset=utf-8><title>Debouncing with a custom GSource</title><script data-goatcounter=https://twiddlingbits.goatcounter.com/count async src=//gc.zgo.at/count.js></script><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><link rel=alternate type=application/rss+xml href=https://twiddlingbits.net/index.xml title="twiddling bits"><meta name=twitter:card content="summary"><meta name=twitter:title content="Debouncing with a custom GSource"><meta name=twitter:description content="While developing sessiond, a session manager written in C with GLib, I was presented with an ideal use case for debouncing: postponing the execution of code that would otherwise run too frequently based on the influx of external events. sessiond is responsible for monitoring X11 input events, which are processed in the GLib event loop using a custom GSource. Debouncing avoids unnecessarily handling every event, especially mouse input events which are generated constantly while the mouse pointer moves."><link rel=stylesheet href=https://twiddlingbits.net/fontawesome/css/all.min.css><link id=dark-mode-theme rel=stylesheet href=https://twiddlingbits.net/css/dark.css><script>var darkTheme=document.getElementById('dark-mode-theme')
-var storedTheme=localStorage.getItem('dark-mode-storage')
-if(storedTheme==='dark'){darkTheme.disabled=false}else if(storedTheme==='light'){darkTheme.disabled=true}</script><script src=https://twiddlingbits.net/js/main.bundle.js></script><script src=https://twiddlingbits.net/js/instantpage.min.js type=module defer></script><meta name=generator content="Hugo 0.80.0"></head><body><header><nav class=navbar><div class=nav><a href=https://twiddlingbits.net/ class=nav-logo><img src=https://twiddlingbits.net/images/icon.png width=40 height=40 alt=logo></a><ul class=nav-links><li><a href=/about/ id=about><em class="fas fa-user fa-lg"></em></a></li><li><a href=/categories id=categories><em class="fas fa-folder-open fa-lg"></em></a></li><li><a href=/tags id=tags><em class="fas fa-tag fa-lg"></em></a></li></ul></div></nav><div class=intro-header><div class=container><div class=posts-heading><h1>Debouncing with a custom GSource</h1></div></div></div></header><div class=container role=main><article class=article class=blog-post><p>While developing <a href=https://twiddlingbits.net/introducing-sessiond/>sessiond</a>, a session manager written in C with
+<!doctype html><html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Debouncing with a custom GSource - twiddling bits</title>
+<meta name=author content="James Reed">
+<meta name=description content="bits of blogging">
+<meta name=generator content="Hugo 0.89.4"><link rel=stylesheet href="https://twiddlingbits.net/css/main.min.48374e1224dd247a477aca09ee6c24cd61d0e3c94c49e588b0c30bf2cd2d2b49.css" integrity="sha256-SDdOEiTdJHpHesoJ7mwkzWHQ48lMSeWIsMML8s0tK0k=">
+<script data-goatcounter=https://twiddlingbits.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+</head>
+<body class="flex flex-col h-screen m-auto max-w-2xl">
+<div class=py-6>
+<nav class="flex flex-row justify-between text-lg">
+<a class="font-bold hover:underline" href=/>twiddling bits</a>
+<ul class="flex flex-row gap-x-4">
+<li>
+<a class="underline hover:no-underline" href=/about title>about</a>
+</li><li>
+<a class="underline hover:no-underline" href=/categories/ title>categories</a>
+</li><li>
+<a class="underline hover:no-underline" href=/tags/ title>tags</a>
+</li>
+</ul>
+</nav>
+</div>
+<main class=flex-grow>
+<article class="gap-y-2 post-border pt-12">
+<h1 class="text-2xl font-bold">Debouncing with a custom GSource</h1>
+<div class="flex flex-col gap-y-1 py-4 text-gray-500">
+<span class=italic>
+Apr 13, 2021
+</span>
+<div class="flex flex-row space-x-4">
+<ul class="flex flex-row flex-wrap gap-x-2">
+<li>
+<a class=category href=/categories/development>Development</a>
+</li>
+</ul>
+<ul class="flex flex-row flex-wrap gap-x-2">
+<li>
+<a class=tag href=/tags/c>#C</a>
+</li><li>
+<a class=tag href=/tags/linux>#Linux</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=prose><p>While developing <a href=https://twiddlingbits.net/introducing-sessiond/>sessiond</a>, a session manager written in C with
 <a href=https://docs.gtk.org/glib/>GLib</a>, I was presented with an ideal use case for debouncing: postponing
 the execution of code that would otherwise run too frequently based on the
 influx of external events. sessiond is responsible for monitoring X11 input
 events, which are processed in the GLib event loop using a
 custom <a href=https://docs.gtk.org/glib/struct.Source.html>GSource</a>. Debouncing avoids unnecessarily handling every event,
 especially mouse input events which are generated constantly while the mouse
-pointer moves.</p><h2 id=abstract-debouncing>Abstract debouncing</h2><p>In the case of sessiond, only the time an input event occurred is relevant, so an
-abstract implementation of debouncing might look like this:</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=n>debounce_interval</span> <span class=o>=</span> <span class=mi>1</span>
+pointer moves.</p>
+<h2 id=abstract-debouncing>Abstract debouncing</h2>
+<p>In the case of sessiond, only the time an input event occurred is relevant, so an
+abstract implementation of debouncing might look like this:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>debounce_interval</span> <span class=o>=</span> <span class=mi>1</span>
 
 <span class=k>while</span> <span class=n>true</span><span class=p>:</span>
     <span class=k>if</span> <span class=n>event</span><span class=p>:</span>
@@ -24,18 +72,24 @@ should be no response to the event until at least <code>debounce_interval</code>
 elapsed, so event processing is scheduled for a time in the future equal to the
 current time plus the debounce interval. If another event occurs before this
 time has passed, an additional response is scheduled, and <code>last_event_time</code> is
-updated.</p><p>In the processing function, it is important to compare the time that has elapsed
+updated.</p>
+<p>In the processing function, it is important to compare the time that has elapsed
 since the last event to <code>debounce_interval</code> to ensure additional events were not
 generated after this response was scheduled. This way, event processing happens
 only when <code>debounce_interval</code> time has passed since the last event was
-received—the essence of debouncing.</p><h2 id=custom-gsource-implementation>Custom GSource implementation</h2><p>This method of debouncing can be implemented with a custom GSource&rsquo;s <code>check</code> and
-<code>dispatch</code> functions using <a href=https://docs.gtk.org/glib/method.Source.set_ready_time.html>g_source_set_ready_time</a>.</p><p>First, define a custom GSource by declaring a struct containing a <code>GSource</code>:</p><div class=highlight><pre class=chroma><code class=language-c data-lang=c><span class=k>typedef</span> <span class=k>struct</span> <span class=p>{</span>
+received—the essence of debouncing.</p>
+<h2 id=custom-gsource-implementation>Custom GSource implementation</h2>
+<p>This method of debouncing can be implemented with a custom GSource&rsquo;s <code>check</code> and
+<code>dispatch</code> functions using <a href=https://docs.gtk.org/glib/method.Source.set_ready_time.html>g_source_set_ready_time</a>.</p>
+<p>First, define a custom GSource by declaring a struct containing a <code>GSource</code>:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>typedef</span> <span class=k>struct</span> <span class=p>{</span>
     <span class=n>GSource</span> <span class=n>source</span><span class=p>;</span>
     <span class=n>gpointer</span> <span class=n>fd</span><span class=p>;</span>
     <span class=n>gint64</span> <span class=n>last_event_time</span><span class=p>;</span>
 <span class=p>}</span> <span class=n>InputSource</span><span class=p>;</span>
 </code></pre></div><p>Next, implement the <code>check</code> function, which determines if the source is ready to
-be dispatched:</p><div class=highlight><pre class=chroma><code class=language-c data-lang=c><span class=cp>#define DEBOUNCE_US (1 * 1000000)
+be dispatched:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cp>#define DEBOUNCE_US (1 * 1000000)
 </span><span class=cp></span>
 <span class=n>gboolean</span>
 <span class=nf>inputsource_check</span><span class=p>(</span><span class=n>GSource</span> <span class=o>*</span><span class=n>source</span><span class=p>)</span>
@@ -56,8 +110,10 @@ pending. If there are no events to be handled, the function returns <code>FALSE<
 signify there is no need to call the <code>dispatch</code> function. Otherwise, pending
 events should be processed accordingly. Finally, the current monotonic
 time—being that of the last event(s)—is recorded and the source is instructed
-to dispatch in <code>DEBOUNCE_US</code> microseconds with <code>g_source_set_ready_time</code>.</p><p>Now, implement the <code>dispatch</code> function, which is responsible for calling the
-callback function provided to this GSource at creation time:</p><div class=highlight><pre class=chroma><code class=language-c data-lang=c><span class=n>gboolean</span>
+to dispatch in <code>DEBOUNCE_US</code> microseconds with <code>g_source_set_ready_time</code>.</p>
+<p>Now, implement the <code>dispatch</code> function, which is responsible for calling the
+callback function provided to this GSource at creation time:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=n>gboolean</span>
 <span class=nf>inputsource_dispatch</span><span class=p>(</span><span class=n>GSource</span> <span class=o>*</span><span class=n>source</span><span class=p>,</span> <span class=n>GSourceFunc</span> <span class=n>func</span><span class=p>,</span> <span class=n>gpointer</span> <span class=n>user_data</span><span class=p>)</span>
 <span class=p>{</span>
     <span class=n>XSource</span> <span class=o>*</span><span class=n>self</span> <span class=o>=</span> <span class=p>(</span><span class=n>XSource</span> <span class=o>*</span><span class=p>)</span><span class=n>source</span><span class=p>;</span>
@@ -79,7 +135,9 @@ since the last event, we call the user-provided callback function, and
 source until the <code>check</code> function detects pending events. This is necessary
 because <code>g_source_set_ready_time</code> will cause the source to be continuously
 dispatched if the time it was last given is in the past, which will inevitably
-be the case.</p><p>Finally, create the <code>GSourceFuncs</code> struct and initialize the custom GSource:</p><div class=highlight><pre class=chroma><code class=language-c data-lang=c><span class=n>GSourceFuncs</span> <span class=n>inputsource_funcs</span> <span class=o>=</span> <span class=p>{</span>
+be the case.</p>
+<p>Finally, create the <code>GSourceFuncs</code> struct and initialize the custom GSource:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=n>GSourceFuncs</span> <span class=n>inputsource_funcs</span> <span class=o>=</span> <span class=p>{</span>
     <span class=nb>NULL</span><span class=p>,</span> <span class=c1>// prepare function
 </span><span class=c1></span>    <span class=n>inputsource_check</span><span class=p>,</span>
     <span class=n>inputsource_dispatch</span><span class=p>,</span>
@@ -101,15 +159,40 @@ be the case.</p><p>Finally, create the <code>GSourceFuncs</code> struct and init
 </span><span class=c1></span>
 <span class=c1>// Attach source to context.
 </span><span class=c1>// g_source_attach(source, ...);
-</span></code></pre></div><h2 id=more-information>More information</h2><p><a href=https://web.archive.org/web/20200806195500/https://developer.gnome.org/gnome-devel-demos/unstable/custom-gsource.c.html.en>This tutorial</a> describes in greater detail the <code>check</code>,
-<code>dispatch</code>, and other functions that control the behavior of a custom GSource.</p><p>For a complete working example, refer to sessiond&rsquo;s debouncing implementation in
-<a href=https://github.com/jcrd/sessiond/blob/master/src/xsource.c>xsource.c</a>.</p><div class=blog-tags><a href=https://twiddlingbits.net/tags/c/>C</a>&nbsp;
-<a href=https://twiddlingbits.net/tags/linux/>Linux</a>&nbsp;</div></article></div><footer><div class=social-icons><a href=https://github.com/jcrd name=github><em class="fab fa-github fa-lg"></em></a></div><div class=container><p class="credits copyright"><a href=https://twiddlingbits.net/about>James Reed</a>
+</span></code></pre></div><h2 id=more-information>More information</h2>
+<p><a href=https://web.archive.org/web/20200806195500/https://developer.gnome.org/gnome-devel-demos/unstable/custom-gsource.c.html.en>This tutorial</a> describes in greater detail the <code>check</code>,
+<code>dispatch</code>, and other functions that control the behavior of a custom GSource.</p>
+<p>For a complete working example, refer to sessiond&rsquo;s debouncing implementation in
+<a href=https://github.com/jcrd/sessiond/blob/master/src/xsource.c>xsource.c</a>.</p>
+</div>
+</article>
+</main>
+<div class=py-10>
+<footer class="flex justify-center">
+<div class="flex flex-col gap-y-2">
+<div class="flex gap-x-1">
+<a class=hover:underline href=/about>James Reed</a>
+<p class=text-gray-500>
 &nbsp;&copy;
 2021
-&nbsp;/&nbsp;
-<a href=https://twiddlingbits.net/>twiddling bits</a>
-&nbsp;&ndash;&nbsp;
-<em class="fas fa-moon" id=dark-mode-toggle></em></p><p class="credits theme-by">Powered By <a href=https://gohugo.io>Hugo</a>&nbsp;
-Theme
-<a href=https://github.com/matsuyoshi30/harbor>Harbor</a></p></div></footer></body></html>
+&sdot;
+</p>
+<a class=hover:underline href=/>twiddling bits</a>
+</div>
+<div class="flex justify-center gap-x-4 text-gray-500">
+<p>
+powered by
+<a class=bold-link href=https://gohugo.io/>hugo</a>
+</p>
+<p>
+theme
+<a class=bold-link href=https://github.com/jcrd/hugo-theme-readme>
+readme
+</a>
+</p>
+</div>
+</div>
+</footer>
+</div>
+</body>
+</html>
