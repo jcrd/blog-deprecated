@@ -2,48 +2,39 @@ baseURL = "https://twiddlingbits.net/"
 languageCode = "en-us"
 title = "twiddling bits"
 
-theme = "harbor"
+theme = "readme"
 enableInlineShortcodes = true
 pygmentsCodeFences = true
 pygmentsUseClasses = true
 
-[author]
-name = "James Reed"
+[build]
+writeStats = true
 
-[params.goatcounter]
-domain = "twiddlingbits.goatcounter.com"
+[params]
+description = "bits of blogging"
+author = "James Reed"
+highlight = true
 
-[[params.nav]]
+[params.analytics]
+goatcounter = "twiddlingbits.goatcounter.com"
+
+[[menu.main]]
 identifier = "about"
 name = "about"
-icon = "fas fa-user fa-lg"
-url = "/about/"
+url = "/about"
 weight = 1
 
-[[params.nav]]
+[[menu.main]]
 identifier = "categories"
 name = "categories"
-icon = "fas fa-folder-open fa-lg"
-url = "categories"
+url = "/categories/"
 weight = 2
 
-[[params.nav]]
+[[menu.main]]
 identifier = "tags"
 name = "tags"
-icon = "fas fa-tag fa-lg"
-url = "tags"
+url = "/tags/"
 weight = 3
-
-[[params.social]]
-name="github"
-url="https://github.com/jcrd"
-icon="fab fa-github fa-lg"
-
-[params.logo]
-url = "icon.png"
-width = 40
-height = 40
-alt = "logo"
 
 [permalinks]
 posts = "/:title/"
