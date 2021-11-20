@@ -24,17 +24,10 @@ jobs:
         with:
           node-version: 'lts/*'
           cache: 'npm'
-          cache-dependency-path: |
-            package-lock.json
-            themes/readme/package-lock.json
+          cache-dependency-path: themes/readme/package-lock.json
 
-      - name: Install npm dependencies
-        run: |
-          npm ci
-          cd themes/readme && npm ci
-
-      - name: Build
-        run: hugo --minify
+      - name: Run build script
+        run: ./build.sh
         env:
           HUGO_ENVIRONMENT: production
 

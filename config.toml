@@ -3,6 +3,8 @@ languageCode = "en-us"
 title = "twiddling bits"
 
 theme = "readme"
+themesDir = "../.."
+
 enableInlineShortcodes = true
 pygmentsCodeFences = true
 pygmentsUseClasses = true
