@@ -1,13 +1,11 @@
 THEME := themes/readme
+BUILDDIR := builddir
 
-serve: node_modules $(THEME)/node_modules
-	hugo serve -D
+serve: $(THEME)/node_modules
+	cd $(THEME) && hugo serve -D -s $(BUILDDIR)
 
-build: node_modules $(THEME)/node_modules
-	hugo --minify
-
-node_modules:
-	npm ci
+build: $(THEME)/node_modules
+	cd $(THEME) && hugo --minify -s $(BUILDDIR)
 
 $(THEME)/node_modules:
 	cd $(THEME) && npm ci
