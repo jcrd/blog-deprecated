@@ -2,7 +2,8 @@
 title: "About"
 ---
 
-I'm James Reed, a postmodern homo sapien.
+{{< gravatar email="james@twiddlingbits.net"
+text="I'm James Reed, a post(post?)modern homo sapien." >}}
 
 These are some of my software projects:
 
