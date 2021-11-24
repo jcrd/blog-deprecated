@@ -1,0 +1,55 @@
+- name: sessiond
+  description: A standalone X session manager
+  url: https://sessiond.org/
+  languages:
+    - c
+    - python
+
+- name: wm-launch
+  description: Tool to launch X11 clients with unique IDs
+  url: https://github.com/jcrd/wm-launch
+  languages:
+    - c
+    - go
+
+- name: dovetail
+  description: An opinionated tiling window manager
+  url: https://github.com/jcrd/dovetail
+  languages:
+    - lua
+
+- name: iniq
+  description: A simple INI file reader for the command line
+  url: https://github.com/jcrd/iniq
+  languages:
+    - c
+
+- name: passless
+  description: A declarative password manager based on lesspass
+  url: https://github.com/jcrd/passless
+  languages:
+    - bash
+
+- name: toolboxcutter
+  description: Script to automate use of toolbox using per-project Dockerfiles
+  url: https://github.com/jcrd/toolboxcutter
+  languages:
+    - bash
+
+- name: nicety
+  description: A process priority management daemon for Linux
+  url: https://github.com/jcrd/nicety
+  languages:
+    - go
+
+- name: lifelight
+  description: Game of Life for Raspberry Pi with LED matrix display
+  url: https://github.com/jcrd/lifelight
+  languages:
+    - go
+
+- name: tidepool
+  description: A digital evolution system and library
+  url: https://github.com/jcrd/tidepool
+  languages:
+    - go
