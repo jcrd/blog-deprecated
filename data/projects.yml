@@ -53,3 +53,10 @@
   url: https://github.com/jcrd/tidepool
   languages:
     - go
+
+- name: hugo-theme-readme
+  description: This very blog theme
+  url: https://github.com/jcrd/hugo-theme-readme
+  languages:
+    - html
+    - css
