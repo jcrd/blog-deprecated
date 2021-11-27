@@ -1,0 +1,39 @@
+baseURL: "https://twiddlingbits.net/"
+languageCode: "en-us"
+title: "twiddling bits"
+
+theme: "readme"
+themesDir: "../.."
+
+enableInlineShortcodes: true
+pygmentsCodeFences: true
+pygmentsUseClasses: true
+
+build:
+  writeStats: true
+
+params:
+  description: "bits of blogging"
+  author: "James Reed"
+  highlight: true
+  analytics:
+    goatcounter: "twiddlingbits.goatcounter.com"
+
+menu:
+  main:
+    - identifier: "about"
+      name: "about"
+      url: "/about"
+      icon: "user"
+      weight: 1
+    - identifier: "categories"
+      name: "categories"
+      url: "/categories/"
+      weight: 2
+    - identifier: "tags"
+      name: "tags"
+      url: "/tags/"
+      weight: 3
+
+permalinks:
+  posts: "/:title/"
