@@ -9,31 +9,52 @@ enableInlineShortcodes: true
 pygmentsCodeFences: true
 pygmentsUseClasses: true
 
+enableGitInfo: true
+
+frontmatter:
+  lastmod:
+    - lastmod
+    - date
+    - publishDate
+
 build:
   writeStats: true
 
+author:
+  name: "James Reed"
+
 params:
+  commitURL: "https://github.com/jcrd/jcrd.github.io/commit"
   description: "bits of blogging"
-  author: "James Reed"
   highlight: true
   analytics:
     goatcounter: "twiddlingbits.goatcounter.com"
+  logo:
+    file: "images/icon.png"
+    width: 24
+    height: 24
+    title: true
 
 menu:
   main:
     - identifier: "about"
       name: "about"
       url: "/about"
-      icon: "user"
       weight: 1
+      params:
+        icon: true
     - identifier: "categories"
       name: "categories"
       url: "/categories/"
       weight: 2
+      params:
+        icon: true
     - identifier: "tags"
       name: "tags"
       url: "/tags/"
       weight: 3
+      params:
+        icon: true
 
 permalinks:
   posts: "/:title/"
