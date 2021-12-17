@@ -4,6 +4,9 @@
   technologies:
     - c
     - python
+    - X11
+    - GLib
+    - D-Bus
 
 - name: wm-launch
   description: Tool to launch X11 clients with unique IDs
@@ -11,12 +14,16 @@
   technologies:
     - c
     - go
+    - X11
+    - LD_PRELOAD
 
 - name: dovetail
   description: An opinionated tiling window manager
   url: https://github.com/jcrd/dovetail
   technologies:
     - lua
+    - X11
+    - D-Bus
 
 - name: iniq
   description: A simple INI file reader for the command line
@@ -35,6 +42,8 @@
   url: https://github.com/jcrd/toolboxcutter
   technologies:
     - bash
+    - toolbox
+    - podman
 
 - name: nicety
   description: A process priority management daemon for Linux
