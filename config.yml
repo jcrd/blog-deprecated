@@ -27,6 +27,7 @@ params:
   commitURL: "https://github.com/jcrd/jcrd.github.io/commit"
   description: "bits of blogging"
   highlight: true
+  projectsPhrase: "tech"
   analytics:
     goatcounter: "twiddlingbits.goatcounter.com"
   logo:
