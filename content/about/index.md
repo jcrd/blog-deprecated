@@ -4,9 +4,10 @@ title: "About"
 
 {{< gravatar
 email="james@twiddlingbits.net"
-text="I'm James Reed, a metamodern homo sapien and open source software developer."
 link="https://github.com/jcrd"
 >}}
+I'm James Reed, a metamodern homo sapien and open source software developer.
+{{< /gravatar >}}
 
 These are some of my projects:
 
