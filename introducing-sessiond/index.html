@@ -4,8 +4,8 @@
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>Introducing sessiond - twiddling bits</title>
 <meta name=description content="bits of blogging">
-<meta name=generator content="Hugo 0.90.1">
-<link rel=stylesheet href="/css/main.min.445d76834cf729b474ba4b0d2819bd2d4b18bafbf0e1490f1cd93a4f5a607587.css">
+<meta name=generator content="Hugo 0.91.2">
+<link rel=stylesheet href="/css/main.min.63d9da5939eaedf900417dcdd065ac702ed81b6da7412977dabcda269f45c5f3.css">
 <script data-goatcounter=https://twiddlingbits.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
 </head>
 <body class="flex flex-col h-screen mx-6 md:mx-auto my-auto max-w-2xl">
@@ -93,8 +93,15 @@ configuration if needed. See <a href=https://sessiond.org/configuration/>here</a
 <h2 id=how-do-i-use-it>How do I use it?</h2>
 <p>sessiond requires a Linux system utilizing <em>systemd-logind</em>. It may be possible
 to use <a href=https://github.com/elogind/elogind>elogind</a> but this has not been tested.</p>
-<p><strong>Note</strong>: This brief tutorial assumes basic knowledge of <em>systemd</em>-based Linux
-systems and the command-line.</p>
+<div class="flex flex-col">
+<div class="bg-blue-200 rounded-t font-bold">
+&nbsp;Note
+</div>
+<div class="border border-t-0 rounded-b p-1">
+<span>This brief tutorial assumes basic knowledge of <em>systemd</em>-based Linux systems and
+the command-line.</span>
+</div>
+</div>
 <h3 id=installation>Installation</h3>
 <p>Currently, sessiond RPM packages are built for Fedora via <a href=https://copr.fedorainfracloud.org/coprs/jcrd/sessiond/>copr</a> and
 installable with the following commands:</p>
@@ -172,8 +179,8 @@ own sessions!</p>
 </div>
 </article>
 <div class="flex justify-center mt-2 text-gray-300 gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path d="M17.414 2.586a2 2 0 00-2.828.0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/></svg>
-<a class=hover:underline href=https://github.com/jcrd/jcrd.github.io/commit/a3b99011c36057381d938c3309cb192f7821f124>
-a3b9901
+<a class=hover:underline href=https://github.com/jcrd/jcrd.github.io/commit/2b0f00616555157e04d32c0b70ac2b6b16316dbd>
+2b0f006
 </a>
 </div>
 </main>
