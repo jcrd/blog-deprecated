@@ -54,8 +54,10 @@ configuration if needed. See [here][config] for additional details.
 sessiond requires a Linux system utilizing *systemd-logind*. It may be possible
 to use [elogind][elogind] but this has not been tested.
 
-**Note**: This brief tutorial assumes basic knowledge of *systemd*-based Linux
-systems and the command-line.
+{{< notice label="Note">}}
+This brief tutorial assumes basic knowledge of *systemd*-based Linux systems and
+the command-line.
+{{< /notice >}}
 
 [elogind]: https://github.com/elogind/elogind
 
