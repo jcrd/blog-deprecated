@@ -39,6 +39,12 @@ accordingly. It is capable of:
 * dimming the screen's backlight when idle
 * triggering *systemd* targets for use by the window manager or end user
 * optionally managing DPMS settings
+* controlling keyboard and monitor backlight brightness
+* controlling audio sink volume and mute state __*__
+
+{{< notice label="* Update" color="green" >}}
+The audio sink interface is new in version __0.6.0__.
+{{< /notice >}}
 
 It also provides a DBus service so that it may be integrated with modern window
 managers. For example, a window manager can prevent idling when a media player
