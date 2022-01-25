@@ -5,6 +5,7 @@ categories:
 tags:
   - C
   - Linux
+  - GLib
 date: 2021-04-13T10:40:28-06:00
 ---
 
@@ -29,15 +30,16 @@ abstract implementation of debouncing might look like this:
 ```python
 debounce_interval = 1
 
-while true:
-    if event:
-        last_event_time = current_time()
-        schedule_event_processing(last_event_time + debounce_interval)
-
 # Called when time given to `schedule_event_processing` is reached.
 def process_event():
     if current_time() - last_event_time >= debounce_interval:
         process()
+
+while true:
+    if event:
+        last_event_time = current_time()
+        schedule_event_processing(process_event,
+          last_event_time + debounce_interval)
 ```
 
 When an event occurs, the current time is recorded as `last_event_time`. There
