@@ -5,9 +5,8 @@ categories:
 tags:
   - C
   - Linux
-toc: true
-date: 2021-04-04T17:26:11-06:00
-lastmod: 2021-04-11T15:46:37-06:00
+date: 2021-04-04
+lastmod: 2022-01-25
 ---
 
 When I began using Linux on the desktop in ~2012, I experimented with the
