@@ -4,8 +4,8 @@
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>Introducing sessiond - twiddling bits</title>
 <meta name=description content="bits of blogging">
-<meta name=generator content="Hugo 0.91.2">
-<link rel=stylesheet href="/css/main.min.63d9da5939eaedf900417dcdd065ac702ed81b6da7412977dabcda269f45c5f3.css">
+<meta name=generator content="Hugo 0.92.1">
+<link rel=stylesheet href="/css/main.min.fa450c2590ee4a16796c2e4f314831d81634aaebc437c18133e7a85d5601ead0.css">
 <script data-goatcounter=https://twiddlingbits.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
 </head>
 <body class="flex flex-col h-screen mx-6 md:mx-auto my-auto max-w-2xl">
@@ -57,6 +57,9 @@ edited: April 11, 2021
 </ul>
 </div>
 </div>
+<div class="flex gap-x-1 italic"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-4" fill="none" viewBox="0 0 24 24" stroke="currentcolor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3A9 9 0 113 12a9 9 0 0118 0z"/></svg>
+4 mins
+</div>
 </div>
 <div class=prose><p>When I began using Linux on the desktop in ~2012, I experimented with the
 prevalent desktop environments (Gnome, KDE, etc.), but was quickly drawn into
@@ -84,7 +87,17 @@ accordingly. It is capable of:</p>
 <li>dimming the screen&rsquo;s backlight when idle</li>
 <li>triggering <em>systemd</em> targets for use by the window manager or end user</li>
 <li>optionally managing DPMS settings</li>
+<li>controlling keyboard and monitor backlight brightness</li>
+<li>controlling audio sink volume and mute state <strong>*</strong></li>
 </ul>
+<div class="flex flex-col">
+<div class="bg-green-200 rounded-t font-bold">
+&nbsp;* Update
+</div>
+<div class="border border-t-0 rounded-b p-1">
+<span>The audio sink interface is new in version <strong>0.6.0</strong>.</span>
+</div>
+</div>
 <p>It also provides a DBus service so that it may be integrated with modern window
 managers. For example, a window manager can prevent idling when a media player
 is open by interacting with the DBus methods.</p>
@@ -179,8 +192,8 @@ own sessions!</p>
 </div>
 </article>
 <div class="flex justify-center mt-2 text-gray-300 gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path d="M17.414 2.586a2 2 0 00-2.828.0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/></svg>
-<a class=hover:underline href=https://github.com/jcrd/jcrd.github.io/commit/2b0f00616555157e04d32c0b70ac2b6b16316dbd>
-2b0f006
+<a class=hover:underline href=https://github.com/jcrd/jcrd.github.io/commit/ebf588d0522e155060af9abb06e23a6ca519ded9>
+ebf588d
 </a>
 </div>
 </main>
@@ -190,7 +203,7 @@ own sessions!</p>
 <a class=hover:underline href=https://twiddlingbits.net//about>James Reed</a>
 <p class=text-gray-500>
 &nbsp;&copy;
-2021
+2022
 &sdot;
 </p>
 <a class=hover:underline href=https://twiddlingbits.net/>twiddling bits</a>

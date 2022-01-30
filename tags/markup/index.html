@@ -2,9 +2,9 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<title>Linux - twiddling bits</title>
+<title>Markup - twiddling bits</title>
 <meta name=description content="bits of blogging">
-<link rel=alternate type=application/rss+xml href=https://twiddlingbits.net/tags/linux/index.xml title="twiddling bits"><meta name=generator content="Hugo 0.92.1">
+<link rel=alternate type=application/rss+xml href=https://twiddlingbits.net/tags/markup/index.xml title="twiddling bits"><meta name=generator content="Hugo 0.92.1">
 <link rel=stylesheet href="/css/main.min.fa450c2590ee4a16796c2e4f314831d81634aaebc437c18133e7a85d5601ead0.css">
 <script data-goatcounter=https://twiddlingbits.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
 </head>
@@ -32,16 +32,16 @@ twiddling bits
 </div>
 <main class=flex-grow>
 <div class=border-t>
-<h1 class="flex flex-row text-xl font-bold py-6">tag: Linux</h1>
+<h1 class="flex flex-row text-xl font-bold py-6">tag: Markup</h1>
 <div class=post-border>
 <ul class=post-list>
 <li class="gap-y-2 pt-6 md:pt-12">
 <h1 class="text-2xl font-bold hover:underline">
-<a href=/debouncing-with-a-custom-gsource/>Debouncing with a custom GSource</a>
+<a href=/from-pod-to-man/>From Pod to man</a>
 </h1>
 <div class="flex flex-col gap-y-1 py-4 text-gray-500">
 <span class=italic>
-Apr 13, 2021
+Jan 30, 2022
 </span>
 <div class="flex flex-row gap-x-4">
 <div class="flex gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg>
@@ -54,11 +54,9 @@ Apr 13, 2021
 <div class="flex gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414.0l-7-7A.997.997.0 012 10V5a3 3 0 013-3h5c.256.0.512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
 <ul class="flex flex-row flex-wrap gap-x-2">
 <li>
-<a class=tag href=/tags/c>#C</a>
+<a class=tag href=/tags/documentation>#Documentation</a>
 </li><li>
-<a class=tag href=/tags/linux>#Linux</a>
-</li><li>
-<a class=tag href=/tags/glib>#GLib</a>
+<a class=tag href=/tags/markup>#Markup</a>
 </li>
 </ul>
 </div>
@@ -67,47 +65,9 @@ Apr 13, 2021
 4 mins
 </div>
 </div>
-<div class=prose>While developing sessiond, a session manager written in C with GLib, I was presented with an ideal use case for debouncing: postponing the execution of code that would otherwise run too frequently based on the influx of external events. sessiond is responsible for monitoring X11 input events, which are processed in the GLib event loop using a custom GSource. Debouncing avoids unnecessarily handling every event, especially mouse input events which are generated constantly while the mouse pointer moves.</div>
+<div class=prose>While developing many of my projects I&rsquo;ve found myself faced with the timeless question: to document or not to document? My goal is to provide man pages for any project used from the command-line or designed to be integrated into a larger Linux ecosystem. And so, at the onset of my open-source journey, I stood at a crossroad: learn the unwieldy troff format of man pages or set up a process to build them from an alternative markup format.</div>
 <div class="flex justify-end text-gray-500 mt-2 md:mt-4">
-<a class=bold-link href=https://twiddlingbits.net/debouncing-with-a-custom-gsource/>more</a>
-&nbsp;&#8250;
-</div>
-</li>
-<li class="gap-y-2 pt-6 md:pt-12">
-<h1 class="text-2xl font-bold hover:underline">
-<a href=/introducing-sessiond/>Introducing sessiond</a>
-</h1>
-<div class="flex flex-col gap-y-1 py-4 text-gray-500">
-<span class=italic>
-Apr 4, 2021
-&bull;
-edited: April 11, 2021
-</span>
-<div class="flex flex-row gap-x-4">
-<div class="flex gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg>
-<ul class="flex flex-row flex-wrap gap-x-2">
-<li>
-<a class=category href=/categories/projects>Projects</a>
-</li>
-</ul>
-</div>
-<div class="flex gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414.0l-7-7A.997.997.0 012 10V5a3 3 0 013-3h5c.256.0.512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
-<ul class="flex flex-row flex-wrap gap-x-2">
-<li>
-<a class=tag href=/tags/c>#C</a>
-</li><li>
-<a class=tag href=/tags/linux>#Linux</a>
-</li>
-</ul>
-</div>
-</div>
-<div class="flex gap-x-1 italic"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-4" fill="none" viewBox="0 0 24 24" stroke="currentcolor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3A9 9 0 113 12a9 9 0 0118 0z"/></svg>
-4 mins
-</div>
-</div>
-<div class=prose>When I began using Linux on the desktop in ~2012, I experimented with the prevalent desktop environments (Gnome, KDE, etc.), but was quickly drawn into the realm of tiling window managers by their promise of increased productivity and customization. While I believe these promises were fulfilled, tiling window managers were not without a significant shortcoming: they are solely window managers, lacking the integrated suite of software and applications that put the environment in desktop environments.</div>
-<div class="flex justify-end text-gray-500 mt-2 md:mt-4">
-<a class=bold-link href=https://twiddlingbits.net/introducing-sessiond/>more</a>
+<a class=bold-link href=https://twiddlingbits.net/from-pod-to-man/>more</a>
 &nbsp;&#8250;
 </div>
 </li>

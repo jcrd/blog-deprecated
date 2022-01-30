@@ -4,8 +4,8 @@
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>Debouncing with a custom GSource - twiddling bits</title>
 <meta name=description content="bits of blogging">
-<meta name=generator content="Hugo 0.91.2">
-<link rel=stylesheet href="/css/main.min.63d9da5939eaedf900417dcdd065ac702ed81b6da7412977dabcda269f45c5f3.css">
+<meta name=generator content="Hugo 0.92.1">
+<link rel=stylesheet href="/css/main.min.fa450c2590ee4a16796c2e4f314831d81634aaebc437c18133e7a85d5601ead0.css">
 <script data-goatcounter=https://twiddlingbits.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
 </head>
 <body class="flex flex-col h-screen mx-6 md:mx-auto my-auto max-w-2xl">
@@ -51,9 +51,14 @@ Apr 13, 2021
 <a class=tag href=/tags/c>#C</a>
 </li><li>
 <a class=tag href=/tags/linux>#Linux</a>
+</li><li>
+<a class=tag href=/tags/glib>#GLib</a>
 </li>
 </ul>
 </div>
+</div>
+<div class="flex gap-x-1 italic"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-4" fill="none" viewBox="0 0 24 24" stroke="currentcolor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3A9 9 0 113 12a9 9 0 0118 0z"/></svg>
+4 mins
 </div>
 </div>
 <div class=prose><p>While developing <a href=https://twiddlingbits.net/introducing-sessiond/>sessiond</a>, a session manager written in C with
@@ -69,15 +74,16 @@ pointer moves.</p>
 abstract implementation of debouncing might look like this:</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>debounce_interval</span> <span class=o>=</span> <span class=mi>1</span>
 
-<span class=k>while</span> <span class=n>true</span><span class=p>:</span>
-    <span class=k>if</span> <span class=n>event</span><span class=p>:</span>
-        <span class=n>last_event_time</span> <span class=o>=</span> <span class=n>current_time</span><span class=p>()</span>
-        <span class=n>schedule_event_processing</span><span class=p>(</span><span class=n>last_event_time</span> <span class=o>+</span> <span class=n>debounce_interval</span><span class=p>)</span>
-
 <span class=c1># Called when time given to `schedule_event_processing` is reached.</span>
 <span class=k>def</span> <span class=nf>process_event</span><span class=p>():</span>
     <span class=k>if</span> <span class=n>current_time</span><span class=p>()</span> <span class=o>-</span> <span class=n>last_event_time</span> <span class=o>&gt;=</span> <span class=n>debounce_interval</span><span class=p>:</span>
         <span class=n>process</span><span class=p>()</span>
+
+<span class=k>while</span> <span class=n>true</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>event</span><span class=p>:</span>
+        <span class=n>last_event_time</span> <span class=o>=</span> <span class=n>current_time</span><span class=p>()</span>
+        <span class=n>schedule_event_processing</span><span class=p>(</span><span class=n>process_event</span><span class=p>,</span>
+          <span class=n>last_event_time</span> <span class=o>+</span> <span class=n>debounce_interval</span><span class=p>)</span>
 </code></pre></div><p>When an event occurs, the current time is recorded as <code>last_event_time</code>. There
 should be no response to the event until at least <code>debounce_interval</code> has
 elapsed, so event processing is scheduled for a time in the future equal to the
@@ -178,8 +184,8 @@ be the case.</p>
 </div>
 </article>
 <div class="flex justify-center mt-2 text-gray-300 gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path d="M17.414 2.586a2 2 0 00-2.828.0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/></svg>
-<a class=hover:underline href=https://github.com/jcrd/jcrd.github.io/commit/f85300a89bb5fe54954f02d5036a239703bc0a3f>
-f85300a
+<a class=hover:underline href=https://github.com/jcrd/jcrd.github.io/commit/8b59766db15ab1aa1991f700ee3ac3aa338c031b>
+8b59766
 </a>
 </div>
 </main>
@@ -189,7 +195,7 @@ f85300a
 <a class=hover:underline href=https://twiddlingbits.net//about>James Reed</a>
 <p class=text-gray-500>
 &nbsp;&copy;
-2021
+2022
 &sdot;
 </p>
 <a class=hover:underline href=https://twiddlingbits.net/>twiddling bits</a>
