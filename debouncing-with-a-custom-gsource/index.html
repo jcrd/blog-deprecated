@@ -1,148 +1,75 @@
-<!doctype html><html>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>Debouncing with a custom GSource - twiddling bits</title>
-<meta name=description content="bits of blogging">
-<meta name=generator content="Hugo 0.92.1">
-<link rel=stylesheet href="/css/main.min.04412606b0a857b62d4a012cea6f7819fbace275a9acfbd525f987b274f9386c.css">
-<script data-goatcounter=https://twiddlingbits.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
-</head>
-<body class="flex flex-col h-screen mx-6 md:mx-auto my-auto max-w-2xl">
-<div class=py-6>
-<nav class="flex flex-row justify-between text-lg">
-<div class="flex items-center gap-x-4">
-<a href=https://twiddlingbits.net/>
-<img src=https://twiddlingbits.net/images/icon.png width=24 height=24>
-</a>
-<a class="invisible sm:visible font-bold hover:underline" href=https://twiddlingbits.net/>
-twiddling bits
-</a>
-</div>
-<ul class="flex flex-row gap-x-1 sm:gap-x-4">
-<li class="flex items-center gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
-<a class="underline hover:no-underline" href=/about title>about</a>
-</li><li class="flex items-center gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg>
-<a class="underline hover:no-underline" href=/categories/ title>categories</a>
-</li><li class="flex items-center gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414.0l-7-7A.997.997.0 012 10V5a3 3 0 013-3h5c.256.0.512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
-<a class="underline hover:no-underline" href=/tags/ title>tags</a>
-</li>
-</ul>
-</nav>
-</div>
-<main class=flex-grow>
-<article class="gap-y-2 post-border pt-6 md:pt-12">
-<h1 class="text-2xl font-bold">Debouncing with a custom GSource</h1>
-<div class="flex flex-col gap-y-1 py-4 text-gray-500">
-<span class=italic>
-Apr 13, 2021
-</span>
-<div class="flex flex-row gap-x-4">
-<div class="flex gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg>
-<ul class="flex flex-row flex-wrap gap-x-2">
-<li>
-<a class=category href=/categories/development>Development</a>
-</li>
-</ul>
-</div>
-<div class="flex gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414.0l-7-7A.997.997.0 012 10V5a3 3 0 013-3h5c.256.0.512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
-<ul class="flex flex-row flex-wrap gap-x-2">
-<li>
-<a class=tag href=/tags/c>#C</a>
-</li><li>
-<a class=tag href=/tags/linux>#Linux</a>
-</li><li>
-<a class=tag href=/tags/glib>#GLib</a>
-</li>
-</ul>
-</div>
-</div>
-<div class="flex gap-x-1 italic"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-4" fill="none" viewBox="0 0 24 24" stroke="currentcolor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3A9 9 0 113 12a9 9 0 0118 0z"/></svg>
-4 mins
-</div>
-</div>
-<div class=prose><p>While developing <a href=https://twiddlingbits.net/introducing-sessiond/>sessiond</a>, a session manager written in C with
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Debouncing with a custom GSource - twiddling bits</title><meta name=description content="bits of blogging"><meta name=generator content="Hugo 0.97.0"><link rel=stylesheet href="/css/main.min.04412606b0a857b62d4a012cea6f7819fbace275a9acfbd525f987b274f9386c.css"><script data-goatcounter=https://twiddlingbits.goatcounter.com/count async src=//gc.zgo.at/count.js></script></head><body class="flex flex-col h-screen mx-6 md:mx-auto my-auto max-w-2xl"><div class=py-6><nav class="flex flex-row justify-between text-lg"><div class="flex items-center gap-x-4"><a href=https://twiddlingbits.net><img src=https://twiddlingbits.netimages/icon.png width=24 height=24></a>
+<a class="invisible sm:visible font-bold hover:underline" href=https://twiddlingbits.net>twiddling bits</a></div><ul class="flex flex-row gap-x-1 sm:gap-x-4"><li class="flex items-center gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg><a class="underline hover:no-underline" href=/about title>about</a></li><li class="flex items-center gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg><a class="underline hover:no-underline" href=/categories/ title>categories</a></li><li class="flex items-center gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414.0l-7-7A.997.997.0 012 10V5a3 3 0 013-3h5c.256.0.512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg><a class="underline hover:no-underline" href=/tags/ title>tags</a></li></ul></nav></div><main class=flex-grow><article class="gap-y-2 post-border pt-6 md:pt-12"><h1 class="text-2xl font-bold">Debouncing with a custom GSource</h1><div class="flex flex-col gap-y-1 py-4 text-gray-500"><span class=italic>Apr 13, 2021</span><div class="flex flex-row gap-x-4"><div class="flex gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg><ul class="flex flex-row flex-wrap gap-x-2"><li><a class=category href=/categories/development>Development</a></li></ul></div><div class="flex gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414.0l-7-7A.997.997.0 012 10V5a3 3 0 013-3h5c.256.0.512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg><ul class="flex flex-row flex-wrap gap-x-2"><li><a class=tag href=/tags/c>#C</a></li><li><a class=tag href=/tags/linux>#Linux</a></li><li><a class=tag href=/tags/glib>#GLib</a></li></ul></div></div><div class="flex gap-x-1 italic"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-4" fill="none" viewBox="0 0 24 24" stroke="currentcolor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3A9 9 0 113 12a9 9 0 0118 0z"/></svg>4 mins</div></div><div class=prose><p>While developing <a href=https://twiddlingbits.net/introducing-sessiond/>sessiond</a>, a session manager written in C with
 <a href=https://docs.gtk.org/glib/>GLib</a>, I was presented with an ideal use case for debouncing: postponing
 the execution of code that would otherwise run too frequently based on the
 influx of external events. sessiond is responsible for monitoring X11 input
 events, which are processed in the GLib event loop using a
 custom <a href=https://docs.gtk.org/glib/struct.Source.html>GSource</a>. Debouncing avoids unnecessarily handling every event,
 especially mouse input events which are generated constantly while the mouse
-pointer moves.</p>
-<h2 id=abstract-debouncing>Abstract debouncing</h2>
-<p>In the case of sessiond, only the time an input event occurred is relevant, so an
-abstract implementation of debouncing might look like this:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>debounce_interval</span> <span class=o>=</span> <span class=mi>1</span>
-
-<span class=c1># Called when time given to `schedule_event_processing` is reached.</span>
-<span class=k>def</span> <span class=nf>process_event</span><span class=p>():</span>
-    <span class=k>if</span> <span class=n>current_time</span><span class=p>()</span> <span class=o>-</span> <span class=n>last_event_time</span> <span class=o>&gt;=</span> <span class=n>debounce_interval</span><span class=p>:</span>
-        <span class=n>process</span><span class=p>()</span>
-
-<span class=k>while</span> <span class=n>true</span><span class=p>:</span>
-    <span class=k>if</span> <span class=n>event</span><span class=p>:</span>
-        <span class=n>last_event_time</span> <span class=o>=</span> <span class=n>current_time</span><span class=p>()</span>
-        <span class=n>schedule_event_processing</span><span class=p>(</span><span class=n>process_event</span><span class=p>,</span>
-          <span class=n>last_event_time</span> <span class=o>+</span> <span class=n>debounce_interval</span><span class=p>)</span>
-</code></pre></div><p>When an event occurs, the current time is recorded as <code>last_event_time</code>. There
+pointer moves.</p><h2 id=abstract-debouncing>Abstract debouncing</h2><p>In the case of sessiond, only the time an input event occurred is relevant, so an
+abstract implementation of debouncing might look like this:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=n>debounce_interval</span> <span class=o>=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Called when time given to `schedule_event_processing` is reached.</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>process_event</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>current_time</span><span class=p>()</span> <span class=o>-</span> <span class=n>last_event_time</span> <span class=o>&gt;=</span> <span class=n>debounce_interval</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>process</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>while</span> <span class=n>true</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>event</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>last_event_time</span> <span class=o>=</span> <span class=n>current_time</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=n>schedule_event_processing</span><span class=p>(</span><span class=n>process_event</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=n>last_event_time</span> <span class=o>+</span> <span class=n>debounce_interval</span><span class=p>)</span>
+</span></span></code></pre></div><p>When an event occurs, the current time is recorded as <code>last_event_time</code>. There
 should be no response to the event until at least <code>debounce_interval</code> has
 elapsed, so event processing is scheduled for a time in the future equal to the
 current time plus the debounce interval. If another event occurs before this
 time has passed, an additional response is scheduled, and <code>last_event_time</code> is
-updated.</p>
-<p>In the processing function, it is important to compare the time that has elapsed
+updated.</p><p>In the processing function, it is important to compare the time that has elapsed
 since the last event to <code>debounce_interval</code> to ensure additional events were not
 generated after this response was scheduled. This way, event processing happens
 only when <code>debounce_interval</code> time has passed since the last event was
-received—the essence of debouncing.</p>
-<h2 id=custom-gsource-implementation>Custom GSource implementation</h2>
-<p>This method of debouncing can be implemented with a custom GSource&rsquo;s <code>check</code> and
-<code>dispatch</code> functions using <a href=https://docs.gtk.org/glib/method.Source.set_ready_time.html>g_source_set_ready_time</a>.</p>
-<p>First, define a custom GSource by declaring a struct containing a <code>GSource</code>:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>typedef</span> <span class=k>struct</span> <span class=p>{</span>
-    <span class=n>GSource</span> <span class=n>source</span><span class=p>;</span>
-    <span class=n>gpointer</span> <span class=n>fd</span><span class=p>;</span>
-    <span class=n>gint64</span> <span class=n>last_event_time</span><span class=p>;</span>
-<span class=p>}</span> <span class=n>InputSource</span><span class=p>;</span>
-</code></pre></div><p>Next, implement the <code>check</code> function, which determines if the source is ready to
-be dispatched:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cp>#define DEBOUNCE_US (1 * 1000000)
-</span><span class=cp></span>
-<span class=n>gboolean</span>
-<span class=nf>inputsource_check</span><span class=p>(</span><span class=n>GSource</span> <span class=o>*</span><span class=n>source</span><span class=p>)</span>
-<span class=p>{</span>
-    <span class=n>InputSource</span> <span class=o>*</span><span class=n>self</span> <span class=o>=</span> <span class=p>(</span><span class=n>InputSource</span> <span class=o>*</span><span class=p>)</span><span class=n>source</span><span class=p>;</span>
-    <span class=n>GIOCondition</span> <span class=n>revents</span> <span class=o>=</span> <span class=n>g_source_query_unix_fd</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=n>self</span><span class=o>-&gt;</span><span class=n>fd</span><span class=p>);</span>
-
-    <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=p>(</span><span class=n>revents</span> <span class=o>&amp;</span> <span class=n>G_IO_IN</span><span class=p>))</span>
-        <span class=k>return</span> <span class=n>FALSE</span><span class=p>;</span>
-
-    <span class=c1>// Process events...
-</span><span class=c1></span>
-    <span class=n>self</span><span class=o>-&gt;</span><span class=n>last_event_time</span> <span class=o>=</span> <span class=n>g_get_monotonic_time</span><span class=p>();</span>
-    <span class=n>g_source_set_ready_time</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=n>self</span><span class=o>-&gt;</span><span class=n>last_event_time</span> <span class=o>+</span> <span class=n>DEBOUNCE_US</span><span class=p>);</span>
-<span class=p>}</span>
-</code></pre></div><p>In this function, a file descriptor is queried to determine if any events are
+received—the essence of debouncing.</p><h2 id=custom-gsource-implementation>Custom GSource implementation</h2><p>This method of debouncing can be implemented with a custom GSource&rsquo;s <code>check</code> and
+<code>dispatch</code> functions using <a href=https://docs.gtk.org/glib/method.Source.set_ready_time.html>g_source_set_ready_time</a>.</p><p>First, define a custom GSource by declaring a struct containing a <code>GSource</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=k>typedef</span> <span class=k>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>GSource</span> <span class=n>source</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>gpointer</span> <span class=n>fd</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>gint64</span> <span class=n>last_event_time</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span> <span class=n>InputSource</span><span class=p>;</span>
+</span></span></code></pre></div><p>Next, implement the <code>check</code> function, which determines if the source is ready to
+be dispatched:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#define DEBOUNCE_US (1 * 1000000)
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=n>gboolean</span>
+</span></span><span class=line><span class=cl><span class=nf>inputsource_check</span><span class=p>(</span><span class=n>GSource</span> <span class=o>*</span><span class=n>source</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>InputSource</span> <span class=o>*</span><span class=n>self</span> <span class=o>=</span> <span class=p>(</span><span class=n>InputSource</span> <span class=o>*</span><span class=p>)</span><span class=n>source</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>GIOCondition</span> <span class=n>revents</span> <span class=o>=</span> <span class=n>g_source_query_unix_fd</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=n>self</span><span class=o>-&gt;</span><span class=n>fd</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=p>(</span><span class=n>revents</span> <span class=o>&amp;</span> <span class=n>G_IO_IN</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>FALSE</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// Process events...
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl>    <span class=n>self</span><span class=o>-&gt;</span><span class=n>last_event_time</span> <span class=o>=</span> <span class=n>g_get_monotonic_time</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=n>g_source_set_ready_time</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=n>self</span><span class=o>-&gt;</span><span class=n>last_event_time</span> <span class=o>+</span> <span class=n>DEBOUNCE_US</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p>In this function, a file descriptor is queried to determine if any events are
 pending. If there are no events to be handled, the function returns <code>FALSE</code> to
 signify there is no need to call the <code>dispatch</code> function. Otherwise, pending
 events should be processed accordingly. Finally, the current monotonic
 time—being that of the last event(s)—is recorded and the source is instructed
-to dispatch in <code>DEBOUNCE_US</code> microseconds with <code>g_source_set_ready_time</code>.</p>
-<p>Now, implement the <code>dispatch</code> function, which is responsible for calling the
-callback function provided to this GSource at creation time:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=n>gboolean</span>
-<span class=nf>inputsource_dispatch</span><span class=p>(</span><span class=n>GSource</span> <span class=o>*</span><span class=n>source</span><span class=p>,</span> <span class=n>GSourceFunc</span> <span class=n>func</span><span class=p>,</span> <span class=n>gpointer</span> <span class=n>user_data</span><span class=p>)</span>
-<span class=p>{</span>
-    <span class=n>XSource</span> <span class=o>*</span><span class=n>self</span> <span class=o>=</span> <span class=p>(</span><span class=n>XSource</span> <span class=o>*</span><span class=p>)</span><span class=n>source</span><span class=p>;</span>
-
-    <span class=k>if</span> <span class=p>(</span><span class=n>g_get_monotonic_time</span><span class=p>()</span> <span class=o>-</span> <span class=n>self</span><span class=o>-&gt;</span><span class=n>last_event_time</span> <span class=o>&gt;=</span> <span class=n>DEBOUNCE_US</span><span class=p>)</span> <span class=p>{</span>
-        <span class=n>g_source_set_ready_time</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>);</span>
-        <span class=k>return</span> <span class=n>func</span><span class=p>(</span><span class=n>user_data</span><span class=p>);</span>
-    <span class=p>}</span>
-
-    <span class=k>return</span> <span class=n>G_SOURCE_CONTINUE</span><span class=p>;</span>
-<span class=p>}</span>
-</code></pre></div><p>The logic here is as follows: this function is called at the monotonic time
+to dispatch in <code>DEBOUNCE_US</code> microseconds with <code>g_source_set_ready_time</code>.</p><p>Now, implement the <code>dispatch</code> function, which is responsible for calling the
+callback function provided to this GSource at creation time:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=n>gboolean</span>
+</span></span><span class=line><span class=cl><span class=nf>inputsource_dispatch</span><span class=p>(</span><span class=n>GSource</span> <span class=o>*</span><span class=n>source</span><span class=p>,</span> <span class=n>GSourceFunc</span> <span class=n>func</span><span class=p>,</span> <span class=n>gpointer</span> <span class=n>user_data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>XSource</span> <span class=o>*</span><span class=n>self</span> <span class=o>=</span> <span class=p>(</span><span class=n>XSource</span> <span class=o>*</span><span class=p>)</span><span class=n>source</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>g_get_monotonic_time</span><span class=p>()</span> <span class=o>-</span> <span class=n>self</span><span class=o>-&gt;</span><span class=n>last_event_time</span> <span class=o>&gt;=</span> <span class=n>DEBOUNCE_US</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>g_source_set_ready_time</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>func</span><span class=p>(</span><span class=n>user_data</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>G_SOURCE_CONTINUE</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p>The logic here is as follows: this function is called at the monotonic time
 given to <code>g_source_set_ready_time</code> in the <code>check</code> function above, so we know at
 least <code>DEBOUNCE_US</code> time has passed since the handling of <em>those</em> events,
 <strong>but</strong> additional events may have been received in the meantime, reflected by
@@ -152,69 +79,31 @@ since the last event, we call the user-provided callback function, and
 source until the <code>check</code> function detects pending events. This is necessary
 because <code>g_source_set_ready_time</code> will cause the source to be continuously
 dispatched if the time it was last given is in the past, which will inevitably
-be the case.</p>
-<p>Finally, create the <code>GSourceFuncs</code> struct and initialize the custom GSource:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=n>GSourceFuncs</span> <span class=n>inputsource_funcs</span> <span class=o>=</span> <span class=p>{</span>
-    <span class=nb>NULL</span><span class=p>,</span> <span class=c1>// prepare function
-</span><span class=c1></span>    <span class=n>inputsource_check</span><span class=p>,</span>
-    <span class=n>inputsource_dispatch</span><span class=p>,</span>
-    <span class=nb>NULL</span><span class=p>,</span> <span class=c1>// finalize function
-</span><span class=c1></span>    <span class=nb>NULL</span><span class=p>,</span>
-    <span class=nb>NULL</span><span class=p>,</span>
-<span class=p>};</span>
-
-<span class=n>GSource</span> <span class=o>*</span><span class=n>source</span> <span class=o>=</span> <span class=n>g_source_new</span><span class=p>(</span><span class=o>&amp;</span><span class=n>inputsource_funcs</span><span class=p>,</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>InputSource</span><span class=p>));</span>
-<span class=n>InputSource</span> <span class=o>*</span><span class=n>self</span> <span class=o>=</span> <span class=p>(</span><span class=n>InputSource</span> <span class=o>*</span><span class=p>)</span><span class=n>source</span><span class=p>;</span>
-
-<span class=n>self</span><span class=o>-&gt;</span><span class=n>last_event_time</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
-
-<span class=c1>// Add the file descriptor.
-</span><span class=c1>// self-&gt;fd = g_source_add_unix_fd(source, ..., G_IO_IN);
-</span><span class=c1></span>
-<span class=c1>// Set callback.
-</span><span class=c1>// g_source_set_callback(source, ...);
-</span><span class=c1></span>
-<span class=c1>// Attach source to context.
-</span><span class=c1>// g_source_attach(source, ...);
-</span></code></pre></div><h2 id=more-information>More information</h2>
-<p><a href=https://web.archive.org/web/20200806195500/https://developer.gnome.org/gnome-devel-demos/unstable/custom-gsource.c.html.en>This tutorial</a> describes in greater detail the <code>check</code>,
-<code>dispatch</code>, and other functions that control the behavior of a custom GSource.</p>
-<p>For a complete working example, refer to sessiond&rsquo;s debouncing implementation in
-<a href=https://github.com/jcrd/sessiond/blob/master/src/xsource.c>xsource.c</a>.</p>
-</div>
-</article>
-<div class="flex justify-center mt-2 text-gray-300 gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path d="M17.414 2.586a2 2 0 00-2.828.0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/></svg>
-<a class=hover:underline href=https://github.com/jcrd/jcrd.github.io/commit/8b59766db15ab1aa1991f700ee3ac3aa338c031b>
-8b59766
-</a>
-</div>
-</main>
-<div class=py-10>
-<footer class="flex flex-col gap-y-2">
-<div class="flex justify-center gap-x-1">
-<a class=hover:underline href=https://twiddlingbits.net//about>James Reed</a>
-<p class=text-gray-500>
-&nbsp;&copy;
+be the case.</p><p>Finally, create the <code>GSourceFuncs</code> struct and initialize the custom GSource:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=n>GSourceFuncs</span> <span class=n>inputsource_funcs</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>NULL</span><span class=p>,</span> <span class=c1>// prepare function
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>inputsource_check</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>inputsource_dispatch</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nb>NULL</span><span class=p>,</span> <span class=c1>// finalize function
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nb>NULL</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nb>NULL</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>GSource</span> <span class=o>*</span><span class=n>source</span> <span class=o>=</span> <span class=n>g_source_new</span><span class=p>(</span><span class=o>&amp;</span><span class=n>inputsource_funcs</span><span class=p>,</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>InputSource</span><span class=p>));</span>
+</span></span><span class=line><span class=cl><span class=n>InputSource</span> <span class=o>*</span><span class=n>self</span> <span class=o>=</span> <span class=p>(</span><span class=n>InputSource</span> <span class=o>*</span><span class=p>)</span><span class=n>source</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>self</span><span class=o>-&gt;</span><span class=n>last_event_time</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// Add the file descriptor.
+</span></span></span><span class=line><span class=cl><span class=c1>// self-&gt;fd = g_source_add_unix_fd(source, ..., G_IO_IN);
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=c1>// Set callback.
+</span></span></span><span class=line><span class=cl><span class=c1>// g_source_set_callback(source, ...);
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=c1>// Attach source to context.
+</span></span></span><span class=line><span class=cl><span class=c1>// g_source_attach(source, ...);
+</span></span></span></code></pre></div><h2 id=more-information>More information</h2><p><a href=https://web.archive.org/web/20200806195500/https://developer.gnome.org/gnome-devel-demos/unstable/custom-gsource.c.html.en>This tutorial</a> describes in greater detail the <code>check</code>,
+<code>dispatch</code>, and other functions that control the behavior of a custom GSource.</p><p>For a complete working example, refer to sessiond&rsquo;s debouncing implementation in
+<a href=https://github.com/jcrd/sessiond/blob/master/src/xsource.c>xsource.c</a>.</p></div></article><div class="flex justify-center mt-2 text-gray-300 gap-x-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path d="M17.414 2.586a2 2 0 00-2.828.0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/></svg><a class=hover:underline href=https://github.com/jcrd/jcrd.github.io/commit/8b59766db15ab1aa1991f700ee3ac3aa338c031b>8b59766</a></div></main><div class=py-10><footer class="flex flex-col gap-y-2"><div class="flex justify-center gap-x-1"><a class=hover:underline href=https://twiddlingbits.net/about>James Reed</a><p class=text-gray-500>&nbsp;&copy;
 2022
-&sdot;
-</p>
-<a class=hover:underline href=https://twiddlingbits.net/>twiddling bits</a>
-<a class=text-gray-500 type=application/rss+xml href=https://twiddlingbits.net//posts/index.xml><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path d="M5 3a1 1 0 000 2c5.523.0 10 4.477 10 10a1 1 0 102 0C17 8.373 11.627 3 5 3z"/><path d="M4 9a1 1 0 011-1 7 7 0 017 7 1 1 0 11-2 0 5 5 0 00-5-5A1 1 0 014 9zM3 15a2 2 0 114 0 2 2 0 01-4 0z"/></svg>
-</a>
-</div>
-<div class="flex justify-center gap-x-4 text-gray-500">
-<p>
-powered by
-<a class=bold-link href=https://gohugo.io/>hugo</a>
-</p>
-<p>
-theme
-<a class=bold-link href=https://github.com/jcrd/hugo-theme-readme>
-readme
-</a>
-</p>
-</div>
-</footer>
-</div>
-</body>
-</html>
+&sdot;</p><a class=hover:underline href=https://twiddlingbits.net>twiddling bits</a>
+<a class=text-gray-500 type=application/rss+xml href=https://twiddlingbits.net/posts/index.xml><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentcolor"><path d="M5 3a1 1 0 000 2c5.523.0 10 4.477 10 10a1 1 0 102 0C17 8.373 11.627 3 5 3z"/><path d="M4 9a1 1 0 011-1 7 7 0 017 7 1 1 0 11-2 0 5 5 0 00-5-5A1 1 0 014 9zM3 15a2 2 0 114 0 2 2 0 01-4 0z"/></svg></a></div></footer></div></body></html>
