@@ -35,6 +35,7 @@ params:
     width: 24
     height: 24
     title: true
+  vanityFooter: false
 
 menu:
   main:
