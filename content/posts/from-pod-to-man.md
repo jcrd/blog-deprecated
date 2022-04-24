@@ -1,10 +1,9 @@
 ---
 title: "From Pod to man"
-categories:
-  - Development
 tags:
-  - Documentation
-  - Markup
+  - documentation
+  - markup
+  - development
 date: 2022-01-30
 ---
 

@@ -1,10 +1,9 @@
 ---
 title: "Introducing sessiond"
-categories:
-  - Projects
 tags:
-  - C
-  - Linux
+  - c
+  - linux
+  - project
 date: 2021-04-04
 lastmod: 2022-01-25
 ---

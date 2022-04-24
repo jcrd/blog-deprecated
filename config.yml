@@ -45,16 +45,10 @@ menu:
       weight: 1
       params:
         icon: true
-    - identifier: "categories"
-      name: "categories"
-      url: "/categories/"
-      weight: 2
-      params:
-        icon: true
     - identifier: "tags"
       name: "tags"
       url: "/tags/"
-      weight: 3
+      weight: 2
       params:
         icon: true
 
