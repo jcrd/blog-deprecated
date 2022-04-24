@@ -16,34 +16,33 @@ and customization. While I believe these promises were fulfilled, tiling window
 managers were not without a significant shortcoming: they are solely window
 managers, lacking the integrated suite of software and applications that put the
 environment in desktop environments. The most noticeable omission was proper
-*session management*, which facilitates, for instance: locking the screen or
+_session management_, which facilitates, for instance: locking the screen or
 suspending the system after a period of inactivity. This was not a dealbreaker
 on a desktop computer, but using a laptop without these features felt like a
 dysfunctional hack.
 
 It would be quite a few more years of exploring the universe of tiling window
 managers before deciding to address this issue myself, and with the broad
-adoption of *systemd* by the larger Linux ecosystem, it was easier than ever.
+adoption of _systemd_ by the larger Linux ecosystem, it was easier than ever.
 Enter: **sessiond**, a standalone session manager for Linux.
 
 ## What does it do?
 
-sessiond is a daemon for *systemd*-based Linux systems that interfaces with
-*systemd-logind* to provide the missing session management features to X11
+sessiond is a daemon for _systemd_-based Linux systems that interfaces with
+_systemd-logind_ to provide the missing session management features to X11
 window managers. Its primary responsibility is to monitor keyboard and mouse
 activity to determine when a session has become idle, and to then act
 accordingly. It is capable of:
 
-* locking the screen when idle and before suspending the system
-* dimming the screen's backlight when idle
-* triggering *systemd* targets for use by the window manager or end user
-* optionally managing DPMS settings
-* controlling keyboard and monitor backlight brightness
-* controlling audio sink volume and mute state __*__
+- locking the screen when idle and before suspending the system
+- dimming the screen's backlight when idle
+- triggering _systemd_ targets for use by the window manager or end user
+- optionally managing DPMS settings
+- controlling keyboard and monitor backlight brightness
+- controlling audio sink volume and mute state **\***
 
-{{< notice label="* Update" color="green" >}}
-The audio sink interface is new in version __0.6.0__.
-{{< /notice >}}
+{{< notice label="* Update" color="green" >}} The audio sink interface is new in
+version **0.6.0**. {{< /notice >}}
 
 It also provides a DBus service so that it may be integrated with modern window
 managers. For example, a window manager can prevent idling when a media player
@@ -56,13 +55,11 @@ configuration if needed. See [here][config] for additional details.
 
 ## How do I use it?
 
-sessiond requires a Linux system utilizing *systemd-logind*. It may be possible
+sessiond requires a Linux system utilizing _systemd-logind_. It may be possible
 to use [elogind][elogind] but this has not been tested.
 
-{{< notice label="Note">}}
-This brief tutorial assumes basic knowledge of *systemd*-based Linux systems and
-the command-line.
-{{< /notice >}}
+{{< notice label="Note">}} This brief tutorial assumes basic knowledge of
+_systemd_-based Linux systems and the command-line. {{< /notice >}}
 
 [elogind]: https://github.com/elogind/elogind
 
@@ -76,9 +73,9 @@ dnf copr enable jcrd/sessiond
 dnf install sessiond
 ```
 
-I would like to see packages for other major distros in the future.
-Until sessiond achieves world domination, it is recommended to build from source
-by following [these instructions][building].
+I would like to see packages for other major distros in the future. Until
+sessiond achieves world domination, it is recommended to build from source by
+following [these instructions][building].
 
 If you package sessiond for your distribution, please let me know by creating an
 issue [here][sessiond.org-repo].
@@ -90,9 +87,9 @@ issue [here][sessiond.org-repo].
 ### Setting up your window manager
 
 The intended way to use sessiond with your window manager of choice is to create
-a custom *systemd* service in the `~/.config/systemd/user` directory.
-For example, below is a `awesome.service` file that runs the
-[Awesome][awesomewm] window manager:
+a custom _systemd_ service in the `~/.config/systemd/user` directory. For
+example, below is a `awesome.service` file that runs the [Awesome][awesomewm]
+window manager:
 
 ```systemd
 [Unit]
@@ -126,8 +123,7 @@ the default in its configuration file. For example, if using `lightdm`, set
 
 sessiond wouldn't be of much use without a means by which to lock the screen.
 Create a service for your screen locker of choice in `~/.config/systemd/user`.
-For example, here is a `i3lock.service` that runs `i3lock` as the
-screen locker:
+For example, here is a `i3lock.service` that runs `i3lock` as the screen locker:
 
 ```systemd
 [Unit]
@@ -151,13 +147,15 @@ inactive and before suspending the system.
 ### Other services
 
 Additional services (e.g. a compositor) can be started with the session by
-creating *systemd* service files in `~/.config/systemd/user` containing:
+creating _systemd_ service files in `~/.config/systemd/user` containing:
 
 ```systemd
 [Unit]
 PartOf=graphical-session.target
 ```
+
 and:
+
 ```systemd
 [Install]
 WantedBy=graphical-session.target

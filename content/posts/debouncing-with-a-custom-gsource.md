@@ -6,15 +6,15 @@ tags:
   - C
   - Linux
   - GLib
-date: 2021-04-13T10:40:28-06:00
+date: 2021-04-13
 ---
 
 While developing [sessiond][sessiond], a session manager written in C with
 [GLib][glib], I was presented with an ideal use case for debouncing: postponing
 the execution of code that would otherwise run too frequently based on the
 influx of external events. sessiond is responsible for monitoring X11 input
-events, which are processed in the GLib event loop using a
-custom [GSource][gsource]. Debouncing avoids unnecessarily handling every event,
+events, which are processed in the GLib event loop using a custom
+[GSource][gsource]. Debouncing avoids unnecessarily handling every event,
 especially mouse input events which are generated constantly while the mouse
 pointer moves.
 
@@ -24,8 +24,8 @@ pointer moves.
 
 ## Abstract debouncing
 
-In the case of sessiond, only the time an input event occurred is relevant, so an
-abstract implementation of debouncing might look like this:
+In the case of sessiond, only the time an input event occurred is relevant, so
+an abstract implementation of debouncing might look like this:
 
 ```python
 debounce_interval = 1
@@ -98,8 +98,8 @@ In this function, a file descriptor is queried to determine if any events are
 pending. If there are no events to be handled, the function returns `FALSE` to
 signify there is no need to call the `dispatch` function. Otherwise, pending
 events should be processed accordingly. Finally, the current monotonic
-time—being that of the last event(s)—is recorded and the source is instructed
-to dispatch in `DEBOUNCE_US` microseconds with `g_source_set_ready_time`.
+time—being that of the last event(s)—is recorded and the source is instructed to
+dispatch in `DEBOUNCE_US` microseconds with `g_source_set_ready_time`.
 
 Now, implement the `dispatch` function, which is responsible for calling the
 callback function provided to this GSource at creation time:
@@ -121,7 +121,7 @@ inputsource_dispatch(GSource *source, GSourceFunc func, gpointer user_data)
 
 The logic here is as follows: this function is called at the monotonic time
 given to `g_source_set_ready_time` in the `check` function above, so we know at
-least `DEBOUNCE_US` time has passed since the handling of *those* events,
+least `DEBOUNCE_US` time has passed since the handling of _those_ events,
 **but** additional events may have been received in the meantime, reflected by
 an updated `self->last_event_time`. If at least `DEBOUNCE_US` time has elapsed
 since the last event, we call the user-provided callback function, and
@@ -166,5 +166,6 @@ self->last_event_time = 0;
 For a complete working example, refer to sessiond's debouncing implementation in
 [xsource.c][xsource].
 
-[gsource-tut]: https://web.archive.org/web/20200806195500/https://developer.gnome.org/gnome-devel-demos/unstable/custom-gsource.c.html.en
+[gsource-tut]:
+  https://web.archive.org/web/20200806195500/https://developer.gnome.org/gnome-devel-demos/unstable/custom-gsource.c.html.en
 [xsource]: https://github.com/jcrd/sessiond/blob/master/src/xsource.c
