@@ -49,7 +49,7 @@ with an embedded interpreter.
 ## Solution
 
 After consideration of my options, I decided the easiest solution was to vendor
-all dependent packages. I set up Makefile rules to download the version of
+all dependency packages. I set up Makefile rules to download the version of
 packages specified in a version-controlled file to a specific Lua rocks tree
 where the package’s files are extracted and moved into a `lua_modules` directory
 in the root of the project. During installation, these modules are copied to a
