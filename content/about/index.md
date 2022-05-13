@@ -6,7 +6,7 @@ title: "About"
 email="james@twiddlingbits.net"
 link="https://github.com/jcrd"
 >}}
-I'm James Reed, a metamodern homo sapien and open source software developer.
+I'm James Reed, a software developer and connoisseur of many fine things.
 {{< /gravatar >}}
 
 These are some of my projects:
