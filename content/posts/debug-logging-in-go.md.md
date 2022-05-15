@@ -63,7 +63,7 @@ build constraint:
 ```go
 //go:build debug
 
-package life
+package main
 
 import (
 	"log"
