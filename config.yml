@@ -36,6 +36,7 @@ params:
     height: 24
     title: true
   vanityFooter: false
+  supportURL: https://ko-fi.com/twiddlingbits
 
 menu:
   main:
