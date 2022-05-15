@@ -2,7 +2,6 @@
 title: "Debouncing with a custom GSource"
 tags:
   - c
-  - linux
   - glib
   - development
 date: 2021-04-13

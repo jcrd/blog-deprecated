@@ -2,7 +2,6 @@
 title: "luarocket, or vendoring Lua rocks"
 tags:
   - lua
-  - linux
   - development
   - project
 date: 2022-04-24
