@@ -13,11 +13,14 @@ the realm of tiling window managers by their promise of increased productivity
 and customization. While I believe these promises were fulfilled, tiling window
 managers were not without a significant shortcoming: they are solely window
 managers, lacking the integrated suite of software and applications that put the
-environment in desktop environments. The most noticeable omission was proper
-_session management_, which facilitates, for instance: locking the screen or
-suspending the system after a period of inactivity. This was not a dealbreaker
-on a desktop computer, but using a laptop without these features felt like a
-dysfunctional hack.
+environment in desktop environments.
+
+<!--more-->
+
+The most noticeable omission was proper _session management_, which facilitates,
+for instance: locking the screen or suspending the system after a period of
+inactivity. This was not a dealbreaker on a desktop computer, but using a laptop
+without these features felt like a dysfunctional hack.
 
 It would be quite a few more years of exploring the universe of tiling window
 managers before deciding to address this issue myself, and with the broad

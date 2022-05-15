@@ -14,6 +14,8 @@ integrated into a larger Linux ecosystem. And so, at the onset of my open-source
 journey, I stood at a crossroad: learn the unwieldy [troff][troff] format of man
 pages or set up a process to build them from an alternative markup format.
 
+<!--more-->
+
 [manpages]: https://en.wikipedia.org/wiki/Man_page
 [troff]: https://en.wikipedia.org/wiki/Troff
 

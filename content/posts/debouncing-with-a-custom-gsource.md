@@ -16,6 +16,8 @@ events, which are processed in the GLib event loop using a custom
 especially mouse input events which are generated constantly while the mouse
 pointer moves.
 
+<!--more-->
+
 [sessiond]: https://twiddlingbits.net/introducing-sessiond/
 [glib]: https://docs.gtk.org/glib/
 [gsource]: https://docs.gtk.org/glib/struct.Source.html

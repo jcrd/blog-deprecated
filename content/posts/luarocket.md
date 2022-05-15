@@ -19,6 +19,8 @@ manager to download and install its ecosystem of libraries. This tool,
 In these ways, LuaRocks is functionally similar to the package managers of other
 dynamic languages such as [pip][pip] for Python and [npm][npm] for JavaScript.
 
+<!--more-->
+
 Where these features fall short is in managing the dependencies of multiple Lua
 projects—each with a potentially different version of Lua. Being that Lua is an
 [_embedded language_][lua-embed], this is in fact common, and further

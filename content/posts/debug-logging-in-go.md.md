@@ -12,6 +12,8 @@ low-powered [Raspberry Pis][raspi]. I wanted minimal overhead in the production
 build, so I implemented a logging system that is compiled out in non-debug
 builds. This is made easy using Go's [_build constraints_][build-const].
 
+<!--more-->
+
 [lifelight]: https://github.com/jcrd/lifelight
 [raspi]: https://www.raspberrypi.com/products/raspberry-pi-zero/
 [build-const]: https://pkg.go.dev/go/build#hdr-Build_Constraints
