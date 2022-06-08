@@ -1,5 +1,7 @@
 #!/bin/sh
 
+git submodule update --init themes/readme
+
 ln -s themes/readme/node_modules .
 
 cd themes/readme
