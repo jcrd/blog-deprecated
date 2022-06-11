@@ -2,20 +2,22 @@ baseURL: "https://twiddlingbits.net"
 languageCode: "en-us"
 title: "twiddling bits"
 
-theme: "readme"
+theme: "lessen"
 themesDir: "../.."
 
 enableInlineShortcodes: true
 pygmentsCodeFences: true
 pygmentsUseClasses: true
 
-enableGitInfo: true
-
 frontmatter:
   lastmod:
     - lastmod
     - date
     - publishDate
+
+disableKinds:
+  - taxonomy
+  - term
 
 build:
   writeStats: true
@@ -27,31 +29,8 @@ params:
   commitURL: "https://github.com/jcrd/jcrd.github.io/commit"
   description: "bits of blogging"
   highlight: true
-  projectsPhrase: "tech"
   analytics:
     goatcounter: "twiddlingbits.goatcounter.com"
-  logo:
-    file: "images/icon.png"
-    width: 24
-    height: 24
-    title: true
-  vanityFooter: false
-  supportURL: https://ko-fi.com/twiddlingbits
-
-menu:
-  main:
-    - identifier: "about"
-      name: "about"
-      url: "/about"
-      weight: 1
-      params:
-        icon: true
-    - identifier: "tags"
-      name: "tags"
-      url: "/tags/"
-      weight: 2
-      params:
-        icon: true
 
 permalinks:
   posts: "/:title/"

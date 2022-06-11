@@ -1,4 +1,4 @@
-THEME := themes/readme
+THEME := themes/lessen
 BUILDDIR := builddir
 
 serve: $(THEME)/$(BUILDDIR)

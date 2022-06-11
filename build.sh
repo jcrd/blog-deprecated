@@ -1,10 +1,8 @@
 #!/bin/sh
 
-git submodule update --init themes/readme
+ln -s themes/lessen/node_modules .
 
-ln -s themes/readme/node_modules .
-
-cd themes/readme
+cd themes/lessen
 npm ci
 ln -s ../.. builddir
 hugo --minify -s builddir

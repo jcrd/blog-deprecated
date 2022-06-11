@@ -1,0 +1,12 @@
+<footer class="flex gap-x-1">
+    <p class="text-gray-500">
+        &nbsp;&copy;
+        {{ .Site.LastChange.Format "2006" }}
+    </p>
+    <a class="hover:underline" href="{{ .Site.BaseURL }}">
+        {{- .Site.Author.name -}}
+    </a>
+    <a class="text-gray-300" type="application/rss+xml" href="{{ $.Site.BaseURL }}/posts/index.xml">
+        {{ partial "icons.html" "rss" }}
+    </a>
+</footer>

@@ -1,0 +1,36 @@
+{{- $hash := .email | lower | md5 -}}
+{{- $size := "96" -}}
+{{ with .size -}}
+{{- $size = . -}}
+{{- end }}
+<div class="flex gap-x-4 justify-center items-center">
+    {{ with .link -}}
+    <a href={{ . }}>
+    {{- else -}}
+    <a>
+    {{- end }}
+        <img src="https://www.gravatar.com/avatar/{{ $hash }}?s={{ $size }}" />
+    </a>
+    <div class="flex flex-col gap-y-2">
+        {{ with .bio -}}
+        <span>{{ . | markdownify }}</span>
+        {{- end }}
+        <div class="flex gap-x-2">
+            {{ with .github -}}
+            <a href={{ . }}>
+            {{ partial "icons.html" "github" }}
+            </a>
+            {{- end }}
+            {{ with .twitter -}}
+            <a href={{ . }}>
+            {{ partial "icons.html" "twitter" }}
+            </a>
+            {{- end }}
+            {{ with .mailto -}}
+            <a href={{ . }}>
+            {{ partial "icons.html" "email" }}
+            </a>
+            {{- end }}
+        </div>
+    </div>
+</div>

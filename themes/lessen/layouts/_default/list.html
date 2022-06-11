@@ -1,0 +1,29 @@
+{{ define "main" }}
+<div class="flex flex-col gap-y-10">
+    {{ with $.Site.Data.about -}}
+    {{ partial "about.html" . }}
+    {{ with .intro -}}
+    <div class="flex gap-x-1">
+        {{ partial "icons.html" "pen" }}
+        <p class="text-gray-700">{{ . }}</p>
+    </div>
+    {{- end }}
+    {{- end }}
+    <ul class="flex flex-col gap-y-6">
+        {{ range (where site.RegularPages "Type" "in" (slice "posts")).GroupByDate "2006" -}}
+        <li class="flex flex-col divide-y">
+            <h1 class="text-xl font-bold">
+                {{ .Key }}
+            </h1>
+            <ul class="flex flex-col pt-4 gap-y-2">
+                {{ range .Pages -}}
+                <li class="flex text-lg text-gray-700">
+                    <a class="hover:underline" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                </li>
+                {{- end }}
+            </ul>
+        </li>
+        {{- end }}
+    </ul>
+</div>
+{{ end }}

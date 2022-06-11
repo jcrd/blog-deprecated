@@ -1,0 +1,15 @@
+<div class="flex flex-col gap-y-1 text-gray-500">
+    {{ if .Params.date -}}
+    <span class="italic">
+        {{ .Params.date.Format "Jan 2, 2006" }}
+        {{ if not (eq .Params.lastmod .Params.date) -}}
+        &bull;
+        edited: {{ .Params.lastmod.Format "January 2, 2006" }}
+        {{- end }}
+    </span>
+    {{- end }}
+    <div class="flex gap-x-1 italic">
+        {{ partial "icons.html" "clock" }}
+        {{ .ReadingTime }} min{{ if not (eq .ReadingTime 1) }}s{{ end }}
+    </div>
+</div>

@@ -1,0 +1,39 @@
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>
+        {{- block "title" . }}
+        {{- .Title }} - {{ .Site.Title -}}
+        {{ end -}}
+    </title>
+    {{ with .Site.Params.author -}}
+    <meta name="author" content="{{ . }}" />
+    {{- end }}
+    {{ with .Params.description -}}
+    <meta name="description" content="{{ . }}" />
+    {{- else -}}
+    <meta name="description" content="{{ .Site.Params.description }}" />
+    {{- end }}
+    {{ with .Site.Params.Keywords -}}
+    <meta name="keywords" content="{{ delimit . "," }}" />
+    {{- end }}
+
+    {{- with .OutputFormats.Get "rss" -}}
+    {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+    {{- end -}}
+
+    {{- hugo.Generator -}}
+
+    {{- $res := slice (resources.Get "css/styles.css" | postCSS (dict "config" "./assets/css/postcss.config.js")) -}}
+    {{ if and .Site.Params.highlight (fileExists "assets/css/syntax.css") -}}
+    {{- $res = $res | append (resources.Get "css/syntax.css") -}}
+    {{- end -}}
+
+    {{- $res = $res | resources.Concat "css/main.css" -}}
+
+    {{ if hugo.IsProduction -}}
+    {{- $res = $res | minify | fingerprint | resources.PostProcess -}}
+    {{- end }}
+    <link rel="stylesheet" href="{{ $res.RelPermalink }}">
+    {{ partial "analytics.html" . }}
+</head>

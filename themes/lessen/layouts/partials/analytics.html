@@ -1,0 +1,6 @@
+{{ if and .Site.Params.analytics (not .Site.IsServer) -}}
+{{ with .Site.Params.analytics.goatcounter -}}
+<script data-goatcounter="https://{{ . }}/count"
+        async src="//gc.zgo.at/count.js"></script>
+{{- end }}
+{{- end }}
