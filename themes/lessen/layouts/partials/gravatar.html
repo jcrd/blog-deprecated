@@ -1,0 +1,3 @@
+{{- $hash := . | lower | md5 -}}
+{{- $size := "96" -}}
+<img src="https://www.gravatar.com/avatar/{{ $hash }}?s={{ $size }}" />

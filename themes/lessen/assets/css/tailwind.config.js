@@ -2,15 +2,9 @@ module.exports = {
   purge: {
     enabled: process.env.HUGO_ENVIRONMENT === "production",
     mode: "all",
-    content: [
-      "./hugo_stats.json",
-      "./layouts/**/*.html",
-    ],
+    content: ["./hugo_stats.json", "./layouts/**/*.html"],
     options: {
-      safelist: [
-        /bg-(.*)-200/,
-        "chroma",
-      ],
+      safelist: [/bg-(.*)-200/, "chroma"],
     },
     extractors: [
       {
@@ -24,6 +18,9 @@ module.exports = {
   },
   theme: {
     extend: {
+      screens: {
+        "md-960": "960px",
+      },
       colors: {
         gray: {
           100: "#F5F7FA",
@@ -33,32 +30,32 @@ module.exports = {
           100: "#BA2121",
         },
       },
-      typography: theme => ({
+      typography: (theme) => ({
         DEFAULT: {
           css: {
             pre: {
               color: theme("colors.gray.1000"),
-              backgroundColor: theme("colors.gray.100")
+              backgroundColor: theme("colors.gray.100"),
             },
             "pre code::before": {
-              "padding-left": "unset"
+              "padding-left": "unset",
             },
             "pre code::after": {
-              "padding-right": "unset"
+              "padding-right": "unset",
             },
             code: {
               backgroundColor: theme("colors.gray.100"),
               color: theme("colors.red.100"),
               fontWeight: "400",
-              "border-radius": "0.25rem"
+              "border-radius": "0.25rem",
             },
             "code::before": {
               content: '""',
-              "padding-left": "0.25rem"
+              "padding-left": "0.25rem",
             },
             "code::after": {
               content: '""',
-              "padding-right": "0.25rem"
+              "padding-right": "0.25rem",
             },
           },
         },
@@ -66,10 +63,7 @@ module.exports = {
     },
   },
   variants: {
-    extend: {
-    },
+    extend: {},
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-  ]
-}
+  plugins: [require("@tailwindcss/typography")],
+};
