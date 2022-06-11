@@ -1,5 +1,5 @@
 ---
-title: "From Pod to man"
+title: "From Pod to man pages"
 tags:
   - documentation
   - markup
