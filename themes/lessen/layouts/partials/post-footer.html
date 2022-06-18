@@ -1,0 +1,6 @@
+<div class="flex ml-1 italic text-sm text-gray-400">
+    {{ if not (eq .Params.lastmod .Params.date) -}}
+    {{ partial "icons.html" "arrow_return_right" }}
+    edited: {{ .Params.lastmod.Format "January 2, 2006" }}
+    {{- end }}
+</div>
