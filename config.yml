@@ -2,8 +2,9 @@ baseURL: "https://twiddlingbits.net"
 languageCode: "en-us"
 title: "twiddling bits"
 
-theme: "lessen"
-themesDir: "../.."
+module:
+  imports:
+    - path: lessen
 
 enableInlineShortcodes: true
 pygmentsCodeFences: true

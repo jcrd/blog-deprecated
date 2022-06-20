@@ -1,21 +1,6 @@
 module.exports = {
-  purge: {
-    enabled: process.env.HUGO_ENVIRONMENT === "production",
-    mode: "all",
-    content: ["./hugo_stats.json", "./layouts/**/*.html"],
-    options: {
-      safelist: [/bg-(.*)-200/, "chroma"],
-    },
-    extractors: [
-      {
-        extractor: (content) => {
-          const els = JSON.parse(content).htmlElements;
-          return els.tags.concat(els.classes, els.ids);
-        },
-        extensions: ["json"],
-      },
-    ],
-  },
+  content: ["./hugo_stats.json", "./themes/lessen/layouts/**/*.html"],
+  safelist: [{ pattern: /bg-(.*)-200/ }],
   theme: {
     extend: {
       screens: {

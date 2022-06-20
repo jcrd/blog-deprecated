@@ -15,16 +15,17 @@
     <meta name="description" content="{{ .Site.Params.description }}" />
     {{- end }}
     {{ with .Site.Params.Keywords -}}
-    <meta name="keywords" content="{{ delimit . "," }}" />
+    <meta name="keywords" content="{{ delimit . " ," }}" />
     {{- end }}
 
     {{- with .OutputFormats.Get "rss" -}}
-    {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+    {{ printf `
+    <link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
     {{- end -}}
 
     {{- hugo.Generator -}}
 
-    {{- $res := slice (resources.Get "css/styles.css" | postCSS (dict "config" "./assets/css/postcss.config.js")) -}}
+    {{- $res := slice (resources.Get "css/main.css" | resources.PostCSS) -}}
     {{ if and .Site.Params.highlight (fileExists "assets/css/syntax.css") -}}
     {{- $res = $res | append (resources.Get "css/syntax.css") -}}
     {{- end -}}

@@ -24,10 +24,9 @@ jobs:
         with:
           node-version: "lts/*"
           cache: "npm"
-          cache-dependency-path: themes/lessen/package-lock.json
 
-      - name: Run build script
-        run: ./build.sh
+      - name: Build
+        run: make build
         env:
           HUGO_ENVIRONMENT: production
 

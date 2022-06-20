@@ -1,16 +1,13 @@
-THEME := themes/lessen
-BUILDDIR := builddir
+serve: node_modules
+	hugo serve -D
 
-serve: $(THEME)/$(BUILDDIR)
-	cd $(THEME) && hugo serve -D -s $(BUILDDIR)
+build: node_modules
+	hugo --minify
 
-build: $(THEME)/$(BUILDDIR)
-	cd $(THEME) && hugo --minify -s $(BUILDDIR)
+post: node_modules
+	hugo new posts/$(name).md
 
-post: $(THEME)/$(BUILDDIR)
-	cd $(THEME) && hugo new posts/$(name).md -s $(BUILDDIR)
-
-$(THEME)/$(BUILDDIR):
-	./build.sh
+node_modules:
+	npm ci
 
 .PHONY: serve build post
