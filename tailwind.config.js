@@ -1,5 +1,5 @@
 module.exports = {
-  content: ["./hugo_stats.json", "./themes/lessen/layouts/**/*.html"],
+  content: ["./src/**/*.{html,njk,js}"],
   safelist: [{ pattern: /bg-(.*)-200/ }],
   theme: {
     extend: {
@@ -7,30 +7,15 @@ module.exports = {
         "md-960": "960px",
       },
       colors: {
-        gray: {
-          100: "#F5F7FA",
-          1000: "#1F2933",
-        },
-        red: {
-          100: "#BA2121",
-        },
+        "inline-code-fg": "hsl(355, 65%, 65%)",
+        "inline-code-bg": "hsla(220, 14%, 71%, 0.15)",
       },
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            pre: {
-              color: theme("colors.gray.1000"),
-              backgroundColor: theme("colors.gray.100"),
-            },
-            "pre code::before": {
-              "padding-left": "unset",
-            },
-            "pre code::after": {
-              "padding-right": "unset",
-            },
             code: {
-              backgroundColor: theme("colors.gray.100"),
-              color: theme("colors.red.100"),
+              backgroundColor: theme("colors.inline-code-bg"),
+              color: theme("colors.inline-code-fg"),
               fontWeight: "400",
               "border-radius": "0.25rem",
             },

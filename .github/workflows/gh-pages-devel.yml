@@ -7,18 +7,10 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     environment: github-pages-devel
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: true
-
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: "latest"
-          extended: true
 
       - name: Setup Node
         uses: actions/setup-node@v2
@@ -26,10 +18,10 @@ jobs:
           node-version: "lts/*"
           cache: "npm"
 
-      - name: Build
-        run: make build
+      - run: npm ci
+      - run: npm run build
         env:
-          HUGO_ENVIRONMENT: production
+          ELEVENTY_ENV: production
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

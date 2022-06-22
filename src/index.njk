@@ -1,0 +1,44 @@
+---
+layout: default
+---
+
+<div class="space-y-6 pt-1">
+  <div class="space-y-10 md-960:space-y-16">
+    <div class="flex flex-col gap-y-2">
+      <span>{{ about.bio }}</span>
+      <div class="flex gap-x-2">
+          <a href="{{ metadata.links.github }}">
+            {% icon "github" %}
+          </a>
+          <a href="{{ metadata.links.twitter }}">
+            {% icon "twitter" %}
+          </a>
+          <a href="{{ metadata.links.mailto }}">
+            {% icon "email" %}
+          </a>
+      </div>
+    </div>
+    <div class="flex gap-x-1">
+        {% icon "pen" %}
+        <p class="text-gray-700">
+          {{ about.intro }}
+        </p>
+    </div>
+  </div>
+  <ul class="flex flex-col gap-y-6">
+    {% for year, posts in collections.postsByYear %}
+    <li class="flex flex-col divide-y">
+        <h1 class="text-xl font-bold">
+            {{ year }}
+        </h1>
+        <ul class="flex flex-col pt-4 gap-y-2">
+          {% for post in posts %}
+            <li class="text-lg text-gray-700">
+              <a href="{{ post.url | url }}" class="hover:underline">{{ post.data.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

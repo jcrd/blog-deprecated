@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="{{ metadata.description }}" />
+    <meta name="generator" content="Eleventy" />
+
+    {% favicon "./src/static/favicon.svg" %}
+
+    <title>{{ title or metadata.title }}</title>
+
+    <link rel="stylesheet" href="{{ '/site.css' | url }}" />
+    <link rel="stylesheet" href="{{ '/prism-one-dark.css' | url }}" />
+  </head>
+
+  <body class="flex flex-col min-h-screen mx-6 md:mx-auto my-auto max-w-2xl">
+    <main class="flex-grow pt-6 md:pt-12">
+      <div class="flex flex-col md-960:flex-row">
+        <div class="mb-4 md-960:-ml-32 md-960:mr-8">
+          <a href="{{ data.baseURL }}">
+            {% gravatar about.email, 96 %}
+          </a>
+        </div>
+        <div class="pt-4">
+          {{ content | safe }}
+        </div>
+      </div>
+    </main>
+    <footer class="flex gap-x-1 py-10">
+      <p class="text-gray-500">
+          &nbsp;&copy; {{ data.year }}
+      </p>
+      <a class="hover:underline" href="{{ data.baseURL }}">
+          {{ metadata.author }}
+      </a>
+    </footer>
+  </body>
+</html>

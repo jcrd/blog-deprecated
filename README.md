@@ -1,4 +1,6 @@
-# twiddlingbits.net ![github pages][badge]
+# twiddlingbits.net
+
+![github pages][badge]
 
 Personal blog hosted at [twiddlingbits.net](https://twiddlingbits.net/).
 

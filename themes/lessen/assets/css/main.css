@@ -1,7 +1,0 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-.chroma {
-  @apply max-h-96 overflow-scroll;
-}
