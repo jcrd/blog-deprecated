@@ -14,7 +14,7 @@ module.exports.notice = (content, label, color) =>
     <div class="bg-${color}-200 rounded-t font-bold">
       &nbsp;${label}
     </div>
-    <div class="border border-t-0 rounded-b pl-1">
+    <div class="border border-t-0 rounded-b p-1">
       <span class="prose">${content}</span>
     </div>
   </div>`;
