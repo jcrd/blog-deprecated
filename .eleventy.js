@@ -14,7 +14,9 @@ const md = new markdownIt({ html: true })
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(syntaxHighlight)
   eleventyConfig.addPlugin(favicon, { destination: "./public" })
-  eleventyConfig.addPlugin(timeToRead)
+  eleventyConfig.addPlugin(timeToRead, {
+    style: "short",
+  })
 
   eleventyConfig.addShortcode("gravatar", shortcodes.gravatar)
   eleventyConfig.addShortcode("icon", shortcodes.icon)
