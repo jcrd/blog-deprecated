@@ -28,7 +28,7 @@ layout: default
         <ul class="flex flex-col pt-8 gap-y-2">
           {% for post in posts %}
             <li class="text-lg text-gray-700">
-              <a href="{{ post.url | url }}" class="hover:underline">{{ post.data.title }}</a>
+              <a href="{{ post.url }}" class="hover:underline">{{ post.data.title }}</a>
             </li>
           {% endfor %}
         </ul>
